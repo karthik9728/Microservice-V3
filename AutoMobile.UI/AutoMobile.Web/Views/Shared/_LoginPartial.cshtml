@@ -1,8 +1,5 @@
-﻿@using AutoMobile.Domain.ApplicationConstants;
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpAcc;
-<ul class="navbar-nav">
-    @if (httpAcc.HttpContext.Session.GetString(ApplicationConstant.SessionToken) != null &&
-    httpAcc.HttpContext.Session.GetString(ApplicationConstant.SessionToken).Length > 0)
+﻿<ul class="navbar-nav">
+    @if (User.Identity.IsAuthenticated)
     {
         <li class="nav-item">
             <a class="nav-link" asp-controller="Auth" asp-action="Logout">Logout</a>

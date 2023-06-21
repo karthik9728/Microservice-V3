@@ -44,7 +44,11 @@ namespace AutoMobile.Web.Controllers
 
                 var principle = new ClaimsPrincipal(identity);
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principle);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principle, new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTimeOffset.UtcNow.Add(TimeSpan.FromMinutes(30))
+                });
 
                 HttpContext.Session.SetString(ApplicationConstant.SessionToken, model.Token);
 
@@ -97,16 +101,9 @@ namespace AutoMobile.Web.Controllers
         {
             return View();
         }
-
-        [HttpGet]
-        public IActionResult ClearCookies()
+        public IActionResult InternalServerError()
         {
-            if (Request.Cookies.ContainsKey(ApplicationConstant.SessionToken))
-            {
-                Response.Cookies.Delete(ApplicationConstant.SessionToken);
-            }
-
-            return Ok();
+            return View();
         }
     }
 }

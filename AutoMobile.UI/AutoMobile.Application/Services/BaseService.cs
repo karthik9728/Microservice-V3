@@ -1,6 +1,10 @@
 ﻿using AutoMobile.Application.Services.Interface;
+using AutoMobile.Domain.ApplicationConstants;
 using AutoMobile.Domain.ApplicationEnums;
 using AutoMobile.Domain.Common;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,10 +23,13 @@ namespace AutoMobile.Application.Services
 
         public IHttpClientFactory _httpClient { get; set; }
 
-        public BaseService(IHttpClientFactory httpClient)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public BaseService(IHttpClientFactory httpClient, IHttpContextAccessor httpContextAccessor)
         {
             responseModel = new ApiResponse();
             _httpClient = httpClient;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -96,6 +103,28 @@ namespace AutoMobile.Application.Services
 
                         return returnObj;
                     }
+                    else if (apiResponse.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        var context = _httpContextAccessor.HttpContext;
+
+                        await _httpContextAccessor.HttpContext.SignOutAsync();
+
+                        _httpContextAccessor.HttpContext.Session.SetString(ApplicationConstant.SessionToken, "");
+
+                        context.Response.Redirect("/Auth/Login");
+                    }
+                    else if(apiResponse.StatusCode == HttpStatusCode.Forbidden)
+                    {
+                        var context = _httpContextAccessor.HttpContext;
+
+                        context.Response.Redirect("/Auth/AccessDenied");
+                    }
+                    else if( apiResponse.StatusCode == HttpStatusCode.InternalServerError)
+                    {
+                        var context = _httpContextAccessor.HttpContext;
+
+                        context.Response.Redirect("/Auth/InternalServerError");
+                    }
                 }
                 catch (Exception)
                 {
@@ -120,8 +149,6 @@ namespace AutoMobile.Application.Services
 
                 var dto = new ApiResponse
                 {
-                    
-
                     Errors = errors,
                     IsSuccess = false
                 };

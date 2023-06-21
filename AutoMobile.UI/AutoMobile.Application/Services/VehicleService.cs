@@ -2,6 +2,7 @@
 using AutoMobile.Domain.ApplicationEnums;
 using AutoMobile.Domain.Common;
 using AutoMobile.Domain.DTO.Vehicle;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System;
@@ -20,7 +21,7 @@ namespace AutoMobile.Application.Services
 
         private readonly IConfiguration _configuration;
 
-        public VehicleService(IHttpClientFactory httpClientFactory, IConfiguration configuration) : base(httpClientFactory)
+        public VehicleService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(httpClientFactory, httpContextAccessor)
         {
             _configuration = configuration;
             APIGatewayUrl = _configuration["ServiceUrls:APIGateway"];

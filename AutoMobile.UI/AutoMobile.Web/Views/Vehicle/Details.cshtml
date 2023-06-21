@@ -53,7 +53,7 @@
                             <p class="card-text text-uppercase"><strong>Engine</strong></p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="card-text">: @Model.Engine</p>
+                            <p class="card-text">: @Model.Engine / CC</p>
                         </div>
                     </div>
                     <div class="row">
@@ -61,7 +61,7 @@
                             <p class="card-text text-uppercase"><strong>Top Speed</strong></p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="card-text">: @Model.TopSpeed</p>
+                            <p class="card-text">: @Model.TopSpeed / Kmph</p>
                         </div>
                     </div>
                     <div class="row">
@@ -69,7 +69,7 @@
                             <p class="card-text text-uppercase"><strong>Mileage</strong></p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="card-text">: @Model.Mileage</p>
+                            <p class="card-text">: @Model.Mileage / Per Liter</p>
                         </div>
                     </div>
                     <div class="row">
@@ -77,7 +77,7 @@
                             <p class="card-text text-uppercase"><strong>Range</strong></p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="card-text">: @Model.Range</p>
+                            <p class="card-text">: @Model.Range / KM</p>
                         </div>
                     </div>
                     <div class="row">
@@ -85,7 +85,7 @@
                             <p class="card-text text-uppercase"><strong>Seating Capacity</strong></p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="card-text">: @Model.SeatingCapacity</p>
+                            <p class="card-text">: @Model.SeatingCapacity / Person</p>
                         </div>
                     </div>
                     <div class="row">
@@ -93,7 +93,7 @@
                             <p class="card-text text-uppercase"><strong>Base Price</strong></p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="card-text">: @Model.PriceFrom</p>
+                            <p class="card-text">: @Model.PriceFrom.ToString("c")</p>
                         </div>
                     </div>
                     <div class="row">
@@ -101,7 +101,7 @@
                             <p class="card-text text-uppercase"><strong>Top-End Price</strong></p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="card-text">: @Model.PriceTo</p>
+                            <p class="card-text">: @Model.PriceTo.ToString("c")</p>
                         </div>
                     </div>
                     <div class="row">
@@ -109,7 +109,7 @@
                             <p class="card-text text-uppercase"><strong>Ratings</strong></p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="card-text">: @Model.Ratings</p>
+                            <p class="card-text">: @Model.Ratings / 5</p>
                         </div>
                     </div>                
                 </div>               

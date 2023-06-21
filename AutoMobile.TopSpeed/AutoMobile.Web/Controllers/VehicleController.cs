@@ -4,6 +4,7 @@ using AutoMobile.Application.Contracts.Persistence;
 using AutoMobile.Domain.Common;
 using AutoMobile.Domain.DTO.Vehicle;
 using AutoMobile.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -11,6 +12,7 @@ using System.Net;
 
 namespace AutoMobile.Web.Controllers
 {
+    [Authorize]
     [Route("api/topspeed/[controller]")]
     [ApiController]
     public class VehicleController : ControllerBase
@@ -84,6 +86,7 @@ namespace AutoMobile.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ApiResponse>> Create(VehicleCreateDto dto)

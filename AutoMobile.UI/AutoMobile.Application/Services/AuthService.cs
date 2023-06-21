@@ -3,6 +3,7 @@ using AutoMobile.Application.Services.Interface;
 using AutoMobile.Domain.ApplicationEnums;
 using AutoMobile.Domain.Common;
 using AutoMobile.Domain.DTO.User;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace AutoMobile.Application.Services
 
         private readonly IConfiguration _configuration;
 
-        public AuthService(IHttpClientFactory httpClientFactory, IConfiguration configuration) : base(httpClientFactory)
+        public AuthService(IHttpClientFactory httpClientFactory,IHttpContextAccessor httpContextAccessor,IConfiguration configuration) : base(httpClientFactory,httpContextAccessor)
         {
             _configuration = configuration;
             APIGatewayUrl = _configuration["ServiceUrls:APIGateway"];
