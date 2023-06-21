@@ -97,5 +97,16 @@ namespace AutoMobile.Web.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult ClearCookies()
+        {
+            if (Request.Cookies.ContainsKey(ApplicationConstant.SessionToken))
+            {
+                Response.Cookies.Delete(ApplicationConstant.SessionToken);
+            }
+
+            return Ok();
+        }
     }
 }

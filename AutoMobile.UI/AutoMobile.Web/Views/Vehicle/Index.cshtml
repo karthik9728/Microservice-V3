@@ -8,7 +8,7 @@
             <h2>Vehicle List</h2>
         </div>
         <div class="col-md-6 text-end">
-            <a asp-area="Admin" asp-controller="Post" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Create</a>
+            <a asp-area="Admin" asp-controller="Vehicle" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Create</a>
         </div>
     </div>
     <hr />
@@ -17,11 +17,11 @@
         <table id="table" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th class="text-center">Name</th>
+                    <th class="text-center">Model</th>
                     <th class="text-center">Brand</th>
                     <th class="text-center">Vehicle Type</th>
                     <th class="text-center">Engine / FuelType</th>
-                    <th class="text-center">Strarting Price</th>
+                    <th class="text-center">Starting Price</th>
                     <th class="text-center">Top-End Price</th>
                     <th class="text-center">Ratings</th>
                     <th class="text-center">Actions</th>
@@ -35,14 +35,14 @@
                         <td class="">@item.Brand</td>
                         <td class="">@item.VehicleType</td>
                         <td class="">@item.EngineAndFuelType</td>
-                        <td class="">@item.PriceFrom</td>
-                        <td class="">@item.PriceTo</td>
+                        <td class="">@item.PriceFrom.ToString("c")</td>
+                        <td class="">@item.PriceTo.ToString("c")</td>
                         <td class="">@item.Ratings</td>
                         <td class="d-flex align-items-center justify-content-center">
                             <div class="w-75 btn-group" role="group">
-                                <a asp-area="Admin" asp-controller="Post" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Details"><i class="bi bi-info-circle"></i> </a>
-                                <a asp-area="Admin" asp-controller="Post" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil-square"></i></a>
-                                <a asp-area="Admin" asp-controller="Post" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="bi bi-trash"></i> </a>
+                                <a asp-controller="Vehicle" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Details"><i class="bi bi-info-circle"></i> </a>
+                                <a asp-controller="Vehicle" asp-action="Update" asp-route-id="@item.Id" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil-square"></i></a>
+                                <a asp-controller="Vehicle" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete"><i class="bi bi-trash"></i> </a>
                             </div>
                         </td>
                     </tr>

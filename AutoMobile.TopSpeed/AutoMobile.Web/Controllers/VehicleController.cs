@@ -43,7 +43,8 @@ namespace AutoMobile.Web.Controllers
             {
 
                 _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.AddError(ex.Message.ToString());
+                //_response.AddError(ex.Message.ToString());
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return Ok(_response);
@@ -75,7 +76,8 @@ namespace AutoMobile.Web.Controllers
             {
 
                 _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.AddError(ex.Message.ToString());
+                //_response.AddError(ex.Message.ToString());
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return Ok(_response);
@@ -103,11 +105,13 @@ namespace AutoMobile.Web.Controllers
                 _response.StatusCode = HttpStatusCode.Created;
                 _response.IsSuccess = true;
                 _response.Result = vehicle;
+                _response.DisplayMessage = CommonMessage.RecordCreated;
             }
             catch (Exception ex)
             {
                 _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.AddError(ex.Message.ToString());
+                //_response.AddError(ex.Message.ToString());
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return Ok(_response);
@@ -132,11 +136,13 @@ namespace AutoMobile.Web.Controllers
 
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
+                _response.DisplayMessage = CommonMessage.RecordUpdated;
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.AddError(ex.Message.ToString());
+                //_response.AddError(ex.Message.ToString());
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return Ok(_response);
@@ -163,11 +169,13 @@ namespace AutoMobile.Web.Controllers
 
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
+                _response.DisplayMessage = CommonMessage.RecordDeleted;
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.AddError(ex.Message.ToString());
+                //_response.AddError(ex.Message.ToString());
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return Ok(_response);

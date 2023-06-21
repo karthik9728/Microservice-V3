@@ -73,7 +73,7 @@ namespace AutoMobile.Application.Services
             return SendAsync<T>(new ApiRequest()
             {
                 ApiType = ApiType.PUT,
-                Url = APIGatewayUrl + "/api/topspeed/Vehicle",
+                Url = APIGatewayUrl + $"/api/topspeed/Vehicle?id={dto.Id}",
                 Data = dto,
                 Token = token
             });

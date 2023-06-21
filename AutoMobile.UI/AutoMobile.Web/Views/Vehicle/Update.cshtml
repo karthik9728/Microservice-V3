@@ -1,0 +1,115 @@
+﻿@model VehicleUpdateDto
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-uppercase text-center">Update Record</h2>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-12 border-1 border p-4">
+            <form method="post" enctype="multipart/form-data">
+                <input asp-for="Id" hidden/>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="Brand" class="form-label"></label>
+                            <input asp-for="Brand" class="form-control" />
+                            <span asp-validation-for="Brand"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="VehicleType" class="form-label"></label>
+                            <input asp-for="VehicleType" class="form-control" />
+                            <span asp-validation-for="VehicleType"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="EngineAndFuelType" class="form-label"></label>
+                            <input asp-for="EngineAndFuelType" class="form-control" />
+                            <span asp-validation-for="EngineAndFuelType"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="Transmission" class="form-label"></label>
+                            <input asp-for="Transmission" class="form-control" />
+                            <span asp-validation-for="Transmission"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="Engine" class="form-label"></label>
+                            <input asp-for="Engine" class="form-control" />
+                            <span asp-validation-for="Engine"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="TopSpeed" class="form-label"></label>
+                            <input asp-for="TopSpeed" class="form-control" />
+                            <span asp-validation-for="TopSpeed"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="Mileage" class="form-label"></label>
+                            <input asp-for="Mileage" class="form-control" />
+                            <span asp-validation-for="Mileage"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="Range" class="form-label"></label>
+                            <input asp-for="Range" class="form-control" />
+                            <span asp-validation-for="Range"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="SeatingCapacity" class="form-label"></label>
+                            <input asp-for="SeatingCapacity" class="form-control" />
+                            <span asp-validation-for="SeatingCapacity"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="PriceFrom" class="form-label"></label>
+                            <input asp-for="PriceFrom" class="form-control" />
+                            <span asp-validation-for="PriceFrom"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="PriceTo" class="form-label"></label>
+                            <input asp-for="PriceTo" class="form-control" />
+                            <span asp-validation-for="PriceTo"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="Ratings" class="form-label"></label>
+                            <input asp-for="Ratings" class="form-control" />
+                            <span asp-validation-for="Ratings"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-end">
+                        <div class="mb-3">
+                            <a asp-controller="Vehicle" asp-action="Index" class="btn btn-danger">Back</a>
+                            <button type="submit" class="btn btn-warning">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

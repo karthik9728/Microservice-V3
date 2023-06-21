@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
 </head>
 <body>
+    <partial name="_Notification" />
     <header>
         <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
             <div class="container-fluid">
@@ -24,7 +25,7 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>     
                         <li class="nav-item">
-                            <a class="nav-link"  asp-controller="Vehicle" asp-action="Index">Vechiels</a>
+                            <a class="nav-link" asp-controller="Vehicle" asp-action="Index">Vechiels</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -47,6 +48,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

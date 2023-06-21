@@ -1,0 +1,125 @@
+﻿@model VehicleDetailsDto
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header text-center text-uppercase">
+            Vechiel Details
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Model</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.Name</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Brand</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.Brand</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Vehicle Type</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.VehicleType</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Engine / Fuel Type</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.EngineAndFuelType</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Transmission</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.Transmission</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Engine</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.Engine</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Top Speed</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.TopSpeed</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Mileage</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.Mileage</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Range</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.Range</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Seating Capacity</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.SeatingCapacity</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Base Price</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.PriceFrom</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Top-End Price</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.PriceTo</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="card-text text-uppercase"><strong>Ratings</strong></p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="card-text">: @Model.Ratings</p>
+                        </div>
+                    </div>                
+                </div>               
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <a asp-controller="Vehicle" asp-action="Index" class="btn btn-danger">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMobile.Domain.DTO.Vehicle;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace AutoMobile.Domain.Common
     {
         public MappingProfile()
         {
-            
+            CreateMap<VehicleDetailsDto,VehicleUpdateDto>().ReverseMap();
         }
     }
 }
