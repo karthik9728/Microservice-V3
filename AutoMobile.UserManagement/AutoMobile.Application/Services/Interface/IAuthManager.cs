@@ -17,8 +17,6 @@ namespace AutoMobile.Application.Services.Interface
 
         Task<object> SignIn(LoginInputModel loginInputModel);
 
-        Task<AuthResponseVM> VerfiyRefreshToken(AuthResponseInputModel authResponseInputModel);
-
         Task<bool> IsUserExists(string emailId);
     }
 }

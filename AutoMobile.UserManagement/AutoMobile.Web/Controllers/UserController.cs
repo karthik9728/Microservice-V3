@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using AutoMobile.Domain.ViewModel;
 
 namespace AutoMobile.Web.Controllers
 {
@@ -80,13 +81,20 @@ namespace AutoMobile.Web.Controllers
                 {
                     var result = await _authManager.SignIn(login);
 
-                    if (result != null)
+                    if (result is string)
+                    {
+                        _response.IsSuccess = false;
+                        _response.StatusCode = HttpStatusCode.BadRequest;
+                        _response.AddError(result.ToString());
+                    }
+                    else if(result is AuthResponseVM)
                     {
                         _response.IsSuccess = true;
                         _response.StatusCode = HttpStatusCode.OK;
                         _response.Result = result;
-
                     }
+
+                   
                 }
                 else
                 {
@@ -101,33 +109,6 @@ namespace AutoMobile.Web.Controllers
             }
 
             return _response;
-        }
-
-        [HttpPost]
-        [Route("RefreshToken")]
-        [AllowAnonymous]
-        public async Task<ActionResult<ApiResponse>> RefreshToken(AuthResponseInputModel request)
-        {
-            try
-            {
-                var authResponse = await _authManager.VerfiyRefreshToken(request);
-                if (authResponse == null)
-                {
-                    _response.AddError("UnAthorized");
-                }
-                else
-                {
-                    _response.IsSuccess = true;
-                    _response.StatusCode = HttpStatusCode.OK;
-                    _response.Result = authResponse;
-                }
-            }
-            catch (Exception ex)
-            {           
-                _response.AddError(ex.ToString());
-            }
-
-            return _response;
-        }
+        }   
     }
 }

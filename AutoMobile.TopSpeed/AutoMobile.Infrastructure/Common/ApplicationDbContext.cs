@@ -16,5 +16,9 @@ namespace AutoMobile.Infrastructure.Common
         }
 
         public DbSet<Brand> Brand { get; set; }
+
+        public DbSet<Vehicle> Vehicle { get; set; }
+
+
     }
 }

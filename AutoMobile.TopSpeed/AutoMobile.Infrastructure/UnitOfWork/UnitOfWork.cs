@@ -23,11 +23,14 @@ namespace AutoMobile.Infrastructure.UnitOfWork
             _principal = principal;
             _decodeAccessToken = decodeAccessToken;
             Brand = new BrandRepository(_dbContext);
+            Vehicle = new VehicleRepository(_dbContext);
         }
 
         //public IVehicleTypeRepository VehicleType { get; private set; }
 
         public IBrandRepository Brand { get; private set; }
+
+        public IVehicleRepository Vehicle { get; private set; }
 
         public void Dispose()
         {
@@ -36,7 +39,7 @@ namespace AutoMobile.Infrastructure.UnitOfWork
 
         public async Task SaveAsync()
         {
-            _dbContext.SaveCommonFields(_principal,_decodeAccessToken);
+            _dbContext.SaveCommonFields(_principal, _decodeAccessToken);
             await _dbContext.SaveChangesAsync();
         }
     }

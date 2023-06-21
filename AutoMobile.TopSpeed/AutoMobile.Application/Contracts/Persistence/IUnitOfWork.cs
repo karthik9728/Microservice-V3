@@ -10,6 +10,8 @@ namespace AutoMobile.Application.Contracts.Persistence
     { 
         public IBrandRepository Brand { get; }
 
+        public IVehicleRepository Vehicle { get; }
+
         Task SaveAsync();
     }
 }

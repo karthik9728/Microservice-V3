@@ -53,6 +53,70 @@ namespace AutoMobile.Infrastructure.Migrations
 
                     b.ToTable("Brand");
                 });
+
+            modelBuilder.Entity("AutoMobile.Domain.Models.Vehicle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Brand")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Engine")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EngineAndFuelType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Mileage")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("PriceFrom")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PriceTo")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Range")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Ratings")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SeatingCapacity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TopSpeed")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Transmission")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VehicleType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Vehicle");
+                });
 #pragma warning restore 612, 618
         }
     }

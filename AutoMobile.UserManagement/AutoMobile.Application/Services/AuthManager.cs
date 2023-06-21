@@ -67,7 +67,6 @@ namespace AutoMobile.Application.Services
                 {
                     UserId = user.Id,
                     Token = token,
-                    RefreshToken = await CreateRefreshToken()
                 };
             }
             else
@@ -130,59 +129,6 @@ namespace AutoMobile.Application.Services
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-
-        public async Task<string> CreateRefreshToken()
-        {
-            //remove old token if exsits in database
-            await _userManager.RemoveAuthenticationTokenAsync(user, _loginProvider, _refreshToken);
-
-            //generate new refresh token
-            var newRefreshToken = await _userManager.GenerateUserTokenAsync(user, _loginProvider, _refreshToken);
-
-            //set the new generated refresh token fot user 
-            await _userManager.SetAuthenticationTokenAsync(user, _loginProvider, _refreshToken, newRefreshToken);
-
-            return newRefreshToken;
-
-        }
-
-
-        public async Task<AuthResponseVM> VerfiyRefreshToken(AuthResponseInputModel request)
-        {
-            var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-
-            //getting the old token
-            var tokenContent = jwtSecurityTokenHandler.ReadJwtToken(request.Token);
-
-            //Decryption of old token
-            var userEmail = tokenContent.Claims.ToList().FirstOrDefault(x => x.Type == SystemConstant.ClaimConstants.UserId).Value;
-
-            user = await _userManager.FindByIdAsync(userEmail);
-
-            if (user == null || user.Id != request.UserId)
-            {
-                return null;
-            }
-
-            //Checking Refresh token is valid or not
-            var isValidRefreshToken = await _userManager.VerifyUserTokenAsync(user, _loginProvider, _refreshToken, request.RefreshToken);
-
-            if (isValidRefreshToken)
-            {
-                var token = await GenerateToken();
-                return new AuthResponseVM
-                {
-                    UserId = user.Id,
-                    Token = token,
-                    RefreshToken = await CreateRefreshToken()
-                };
-            }
-
-            //sign out the logged in user
-            await _userManager.UpdateSecurityStampAsync(user);
-            return null;
         }
 
         public async Task<bool> IsUserExists(string emailId)
