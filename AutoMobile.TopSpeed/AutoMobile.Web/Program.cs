@@ -65,7 +65,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "AutoMobile UserManagement API's",
+        Title = "AutoMobile TopSpeed API's",
         Version = "v1",
         License = new OpenApiLicense
         {
@@ -74,7 +74,7 @@ builder.Services.AddSwaggerGen(options =>
         Contact = new OpenApiContact
         {
             Name = "Karthik",
-            Email = "itzmekarthik97@rmail.com"
+            Email = "itzmekarthik97@gmail.com"
         },
     });
 

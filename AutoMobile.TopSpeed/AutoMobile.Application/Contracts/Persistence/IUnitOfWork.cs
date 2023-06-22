@@ -8,7 +8,6 @@ namespace AutoMobile.Application.Contracts.Persistence
 {
     public interface IUnitOfWork : IDisposable
     { 
-        public IBrandRepository Brand { get; }
 
         public IVehicleRepository Vehicle { get; }
 
