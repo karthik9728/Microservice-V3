@@ -109,17 +109,17 @@ namespace AutoMobile.Application.Services
 
                         await _httpContextAccessor.HttpContext.SignOutAsync();
 
-                        _httpContextAccessor.HttpContext.Session.SetString(ApplicationConstant.SessionToken, "");
+                        context.Response.Cookies.Delete(ApplicationConstant.SessionToken);
 
                         context.Response.Redirect("/Auth/Login");
                     }
-                    else if(apiResponse.StatusCode == HttpStatusCode.Forbidden)
+                    else if (apiResponse.StatusCode == HttpStatusCode.Forbidden)
                     {
                         var context = _httpContextAccessor.HttpContext;
 
                         context.Response.Redirect("/Auth/AccessDenied");
                     }
-                    else if( apiResponse.StatusCode == HttpStatusCode.InternalServerError)
+                    else if (apiResponse.StatusCode == HttpStatusCode.InternalServerError || apiResponse.StatusCode == HttpStatusCode.BadGateway)
                     {
                         var context = _httpContextAccessor.HttpContext;
 

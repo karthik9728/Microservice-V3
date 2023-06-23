@@ -50,7 +50,15 @@ namespace AutoMobile.Web.Controllers
                     ExpiresUtc = DateTimeOffset.UtcNow.Add(TimeSpan.FromMinutes(30))
                 });
 
-                HttpContext.Session.SetString(ApplicationConstant.SessionToken, model.Token);
+                //HttpContext.Session.SetString(ApplicationConstant.SessionToken, model.Token);
+
+                HttpContext.Response.Cookies.Append(ApplicationConstant.SessionToken, model.Token, new CookieOptions
+                {
+                    Expires = DateTimeOffset.UtcNow.Add(TimeSpan.FromMinutes(30)),
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict
+                });
 
                 return RedirectToAction("Index", "Home");
             }
@@ -58,7 +66,7 @@ namespace AutoMobile.Web.Controllers
             {
                 ModelState.AddModelError("CustomError", response.Errors.FirstOrDefault().Description);
                 return View(loginRequestDto);
-            }         
+            }
         }
 
 
@@ -92,7 +100,9 @@ namespace AutoMobile.Web.Controllers
         {
             await HttpContext.SignOutAsync();
 
-            HttpContext.Session.SetString(ApplicationConstant.SessionToken, "");
+            HttpContext.Response.Cookies.Delete(ApplicationConstant.SessionToken);
+
+            //HttpContext.Session.SetString(ApplicationConstant.SessionToken, "");
 
             return RedirectToAction("Login");
         }

@@ -15,7 +15,6 @@ namespace AutoMobile.Web.Controllers
 
         private readonly IVehicleService _vehicleService;
         private readonly IMapper _mapper;
-
         public VehicleController(IVehicleService vehicleService, IMapper mapper)
         {
             _vehicleService = vehicleService;
@@ -28,7 +27,9 @@ namespace AutoMobile.Web.Controllers
         {
             List<VehicleDto> list = new List<VehicleDto>();
 
-            var response = await _vehicleService.GetAllAsync<ApiResponse>(HttpContext.Session.GetString(ApplicationConstant.SessionToken));
+            var token = Request.Cookies[ApplicationConstant.SessionToken];
+
+            var response = await _vehicleService.GetAllAsync<ApiResponse>(token);
 
             if (response != null && response.IsSuccess)
             {
@@ -42,7 +43,9 @@ namespace AutoMobile.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Details(int id)
         {
-            var response = await _vehicleService.GetAsync<ApiResponse>(id, HttpContext.Session.GetString(ApplicationConstant.SessionToken));
+            var token = Request.Cookies[ApplicationConstant.SessionToken];
+
+            var response = await _vehicleService.GetAsync<ApiResponse>(id, token);
 
             if (response != null && response.IsSuccess)
             {
@@ -68,7 +71,9 @@ namespace AutoMobile.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _vehicleService.CreateAsync<ApiResponse>(dto, HttpContext.Session.GetString(ApplicationConstant.SessionToken));
+                var token = Request.Cookies[ApplicationConstant.SessionToken];
+
+                var response = await _vehicleService.CreateAsync<ApiResponse>(dto, token);
 
                 if (response != null && response.IsSuccess)
                 {
@@ -86,7 +91,9 @@ namespace AutoMobile.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            var response = await _vehicleService.GetAsync<ApiResponse>(id, HttpContext.Session.GetString(ApplicationConstant.SessionToken));
+            var token = Request.Cookies[ApplicationConstant.SessionToken];
+
+            var response = await _vehicleService.GetAsync<ApiResponse>(id, token);
 
             if (response != null && response.IsSuccess)
             {
@@ -95,7 +102,7 @@ namespace AutoMobile.Web.Controllers
                 return View(_mapper.Map<VehicleUpdateDto>(model));
             }
 
-            return NotFound();
+            return View();
         }
 
         [HttpPost]
@@ -104,7 +111,9 @@ namespace AutoMobile.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _vehicleService.UpdateAsync<ApiResponse>(dto, HttpContext.Session.GetString(ApplicationConstant.SessionToken));
+                var token = Request.Cookies[ApplicationConstant.SessionToken];
+
+                var response = await _vehicleService.UpdateAsync<ApiResponse>(dto, token);
 
                 if (response != null && response.IsSuccess)
                 {
@@ -122,7 +131,9 @@ namespace AutoMobile.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var response = await _vehicleService.GetAsync<ApiResponse>(id, HttpContext.Session.GetString(ApplicationConstant.SessionToken));
+            var token = Request.Cookies[ApplicationConstant.SessionToken];
+
+            var response = await _vehicleService.GetAsync<ApiResponse>(id, token);
 
             if (response != null && response.IsSuccess)
             {
@@ -140,7 +151,9 @@ namespace AutoMobile.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _vehicleService.DeleteAsync<ApiResponse>(dto.Id, HttpContext.Session.GetString(ApplicationConstant.SessionToken));
+                var token = Request.Cookies[ApplicationConstant.SessionToken];
+
+                var response = await _vehicleService.DeleteAsync<ApiResponse>(dto.Id, token);
 
                 if (response != null && response.IsSuccess)
                 {
