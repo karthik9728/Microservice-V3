@@ -19,4 +19,8 @@
     <ProjectReference Include="..\AutoMobile.Domain\AutoMobile.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\EmailTemplate\" />
+  </ItemGroup>
+
 </Project>
