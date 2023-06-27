@@ -7,6 +7,7 @@ using AutoMobile.Domain.InputModel.Users;
 using AutoMobile.Domain.Models;
 using AutoMobile.Domain.ViewModel;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -25,6 +26,7 @@ namespace AutoMobile.Application.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private ApplicationUser user;
@@ -32,10 +34,11 @@ namespace AutoMobile.Application.Services
         private const string _loginProvider = "AutoMobileProvider";
         private const string _refreshToken = "RefreshToken";
 
-        public AuthManager(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IMapper mapper, IConfiguration configuration)
+        public AuthManager(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IMapper mapper, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _mapper = mapper;
             _configuration = configuration;
         }
@@ -51,7 +54,27 @@ namespace AutoMobile.Application.Services
             if (result.Succeeded)
             {
                 //Adding Roles to user
-                await _userManager.AddToRoleAsync(user,registerInputModel.Role);
+               var isRoleExists = await _roleManager.RoleExistsAsync(registerInputModel.Role);
+
+                if (isRoleExists)
+                {
+                    await _userManager.AddToRoleAsync(user, registerInputModel.Role);
+                }
+                else
+                {
+                    await _userManager.DeleteAsync(user);
+                    // Custom error message
+                    var customError = new IdentityError
+                    {
+                        Code = "CustomError",
+                        Description = "Invalid Role"
+                    };
+
+                    // Add the custom error to the result errors collection
+                    var errors = new List<IdentityError>(result.Errors);
+                    errors.Add(customError);
+                    result = IdentityResult.Failed(errors.ToArray());
+                }
             }
 
             return result.Errors;
@@ -68,7 +91,28 @@ namespace AutoMobile.Application.Services
             if (result.Succeeded)
             {
                 //Adding Roles to user
-                await _userManager.AddToRoleAsync(user, CustomRole.Customer);
+                var isRoleExists = await _roleManager.RoleExistsAsync(CustomRole.Customer);
+
+                if (isRoleExists)
+                {
+                    await _userManager.AddToRoleAsync(user, CustomRole.Customer);
+                }
+                else
+                {
+                    await _userManager.DeleteAsync(user);
+
+                    var customError = new IdentityError
+                    {
+                        Code = "CustomError",
+                        Description = "Invalid Role"
+                    };
+
+                    // Add the custom error to the result errors collection
+                    var errors = new List<IdentityError>(result.Errors);
+                    errors.Add(customError);
+                    result = IdentityResult.Failed(errors.ToArray());
+                }
+               
             }
 
             return result.Errors;
@@ -168,6 +212,20 @@ namespace AutoMobile.Application.Services
             return false;
         }
 
+
+        public async Task<List<string>> GetRoles()
+        {
+            var identityRoles = await _roleManager.Roles.ToListAsync();
+
+            List<string> roles = new List<string>();
+
+            foreach (var role in identityRoles)
+            {
+                roles.Add(role.Name);
+            }
+
+            return roles;
+        }
 
         public Task<bool> EmailConfirmation(string userId, string token)
         {

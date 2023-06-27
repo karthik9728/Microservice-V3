@@ -24,6 +24,48 @@ namespace AutoMobile.Web.Controllers
             _response =  new ApiResponse();
         }
 
+
+        [HttpPost]
+        [Route("AdminSignUp")]
+        [AllowAnonymous]
+        public async Task<ApiResponse> AdminSignUp([FromBody] AdminRegisterInputModel user)
+        {
+            try
+            {
+                var errors = await _authManager.AdminSignUp(user);
+                List<string> errorList = new List<string>();
+                if (errors.Any())
+                {
+                    foreach (var error in errors)
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+
+                        errorList = ModelState.Values.SelectMany(m => m.Errors)
+                                 .Select(e => e.ErrorMessage)
+                                 .ToList();
+                        foreach (var item in errorList)
+                        {
+                            _response.AddError(item);
+                        }
+                    }
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    return _response;
+                }
+                else
+                {
+                    _response.IsSuccess = true;
+                    _response.StatusCode = HttpStatusCode.OK;
+                    _response.Result = user;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.AddError(ex.ToString());
+            }
+
+            return _response;
+        }
+
         [HttpPost]
         [Route("SignUp")]
         [AllowAnonymous]
@@ -109,6 +151,26 @@ namespace AutoMobile.Web.Controllers
             }
 
             return _response;
-        }   
+        }
+
+        [HttpGet]
+        [Route("Roles")]
+        public async Task<ApiResponse> GetRoles()
+        {
+            try
+            {
+                var roles = await _authManager.GetRoles();
+
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.IsSuccess = true;
+                _response.Result = roles;
+            }
+            catch (Exception ex)
+            {
+                _response.AddError(ex.ToString());
+            }
+
+            return _response;
+        }
     }
 }

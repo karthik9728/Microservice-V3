@@ -14,6 +14,8 @@ namespace AutoMobile.Domain.Common
     {
         public MappingProfile()
         {
+            CreateMap<ApplicationUser, AdminRegisterInputModel>().ReverseMap();
+
             CreateMap<ApplicationUser, RegisterInputModel>().ReverseMap();
 
             CreateMap<ApplicationUser, ApplicationUserVM>().ReverseMap();
