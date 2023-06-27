@@ -65,5 +65,14 @@ namespace AutoMobile.Application.Services
                 Url = APIGatewayUrl + "/api/usermanagement/User/Roles",
             });
         }
+
+        public Task<T> EmailConfirmationAsync<T>(string queryString)
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = ApplicationEnum.ApiType.POST,
+                Url = APIGatewayUrl + "/api/usermanagement/User/EmailConfirmation" + queryString,
+            });
+        }
     }
 }

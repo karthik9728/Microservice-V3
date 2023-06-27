@@ -16,5 +16,7 @@ namespace AutoMobile.Application.Services.Interface
         Task<T> AdminRegisterAsync<T>(AdminRegisterationRequestDto registerationRequestDto);
 
         Task<T> GetRolesAsync<T>();
+
+        Task<T> EmailConfirmationAsync<T>(string queryString);
     }
 }

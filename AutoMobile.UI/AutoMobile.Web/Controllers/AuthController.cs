@@ -10,6 +10,9 @@ using AutoMobile.Domain.ApplicationConstants;
 using AutoMobile.Domain.ViewModels.SelectListItemVM;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMobile.Application.Services;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Specialized;
+using System.Web;
 
 namespace AutoMobile.Web.Controllers
 {
@@ -153,6 +156,40 @@ namespace AutoMobile.Web.Controllers
                 ModelState.AddModelError("CustomError", response.Errors.FirstOrDefault().Description);
                 return View(registerationRequestDto);
             }
+        }
+
+
+        [HttpGet]
+        public IActionResult EmailConfirmation()
+        {
+            return View();
+        }
+
+        [HttpPost,ActionName("EmailConfirmation")]
+        public async Task<IActionResult> EmailConfirmationPost()
+        {
+            var queryString = HttpContext.Request.QueryString.ToString();
+
+            //// Parse the query string
+            //NameValueCollection queryParams = HttpUtility.ParseQueryString(queryString);
+
+            //// Extract UserId and Token values
+            //string userId = queryParams["UserId"];
+            //string token = queryParams["Token"];
+
+            var response = await _authService.EmailConfirmationAsync<ApiResponse>(queryString);
+
+            if (response.IsSuccess)
+            {
+                return RedirectToAction(nameof(AccountVerified));
+            }
+
+            return View();
+        }
+
+        public IActionResult AccountVerified()
+        {
+            return View();
         }
 
         public async Task<IActionResult> Logout()
