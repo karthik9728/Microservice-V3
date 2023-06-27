@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using AutoMobile.Domain.ViewModel;
 using System.ComponentModel.DataAnnotations;
+using static AutoMobile.Application.ApplicationConstants.ApplicationConstant;
 
 namespace AutoMobile.Web.Controllers
 {
@@ -17,12 +18,14 @@ namespace AutoMobile.Web.Controllers
     public class UserController : ControllerBase
     {
         public readonly IAuthManager _authManager;
+        private readonly ILogger<UserController> _logger;
         protected ApiResponse _response;
 
-        public UserController(IAuthManager authManager)
+        public UserController(IAuthManager authManager, ILogger<UserController> logger)
         {
             _authManager = authManager;
-            _response =  new ApiResponse();
+            _logger = logger;
+            _response = new ApiResponse();
         }
 
 
@@ -61,7 +64,8 @@ namespace AutoMobile.Web.Controllers
             }
             catch (Exception ex)
             {
-                _response.AddError(ex.ToString());
+                //_response.AddError(ex.ToString());
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return _response;
@@ -101,8 +105,9 @@ namespace AutoMobile.Web.Controllers
                 }
             }
             catch (Exception ex)
-            {           
-                _response.AddError(ex.ToString());
+            {
+                //_response.AddError(ex.ToString());
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return _response;
@@ -130,14 +135,14 @@ namespace AutoMobile.Web.Controllers
                         _response.StatusCode = HttpStatusCode.BadRequest;
                         _response.AddError(result.ToString());
                     }
-                    else if(result is AuthResponseVM)
+                    else if (result is AuthResponseVM)
                     {
                         _response.IsSuccess = true;
                         _response.StatusCode = HttpStatusCode.OK;
                         _response.Result = result;
                     }
 
-                   
+
                 }
                 else
                 {
@@ -147,8 +152,9 @@ namespace AutoMobile.Web.Controllers
                 }
             }
             catch (Exception ex)
-            {           
-                _response.AddError(ex.ToString());
+            {
+                // _response.AddError(ex.ToString());
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return _response;
@@ -165,10 +171,16 @@ namespace AutoMobile.Web.Controllers
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.IsSuccess = true;
                 _response.Result = roles;
+
+                _logger.LogInformation("User Contoller - GetRoles Executed Successfully");
             }
             catch (Exception ex)
             {
-                _response.AddError(ex.ToString());
+                _logger.LogError($"User Contoller - Something went worng in GetRoles - {ex.Message}");
+
+                //_response.AddError(ex.ToString());
+
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return _response;
@@ -195,7 +207,9 @@ namespace AutoMobile.Web.Controllers
             }
             catch (Exception ex)
             {
-                _response.AddError(ex.ToString());
+                //_response.AddError(ex.ToString());
+
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return _response;
@@ -232,7 +246,9 @@ namespace AutoMobile.Web.Controllers
             }
             catch (Exception ex)
             {
-                _response.AddError(ex.ToString());
+                //_response.AddError(ex.ToString());
+
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return _response;
@@ -269,7 +285,8 @@ namespace AutoMobile.Web.Controllers
             }
             catch (Exception ex)
             {
-                _response.AddError(ex.ToString());
+                //_response.AddError(ex.ToString());
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return _response;

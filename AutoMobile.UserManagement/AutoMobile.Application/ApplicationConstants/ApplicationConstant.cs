@@ -15,5 +15,10 @@ namespace AutoMobile.Application.ApplicationConstants
             public const string Admin = "ADMIN";
             public const string Customer = "CUSTOMER";
         }
+
+        public class CommonMessage
+        {
+            public const string SystemError = "Server Error Contact System Admin";
+        }
     }
 }
