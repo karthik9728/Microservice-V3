@@ -12,20 +12,22 @@ using System.Net;
 
 namespace AutoMobile.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/topspeed/[controller]")]
     [ApiController]
     public class VehicleController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILogger<VehicleController> _logger;
         protected ApiResponse _response;
 
-        public VehicleController(IUnitOfWork unitOfWork, IMapper mapper)
+        public VehicleController(IUnitOfWork unitOfWork, IMapper mapper, ILogger<VehicleController> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _response = new ApiResponse();
+            _logger = logger;
         }
 
         [HttpGet]
@@ -40,6 +42,8 @@ namespace AutoMobile.Web.Controllers
                 _response.IsSuccess = true;
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = _mapper.Map<List<VehicleDto>>(vehicles);
+
+                _logger.LogInformation("Vechile Controller - Fetched all records successfully");
             }
             catch (Exception ex)
             {
@@ -47,6 +51,8 @@ namespace AutoMobile.Web.Controllers
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 //_response.AddError(ex.Message.ToString());
                 _response.AddError(CommonMessage.SystemError);
+
+                _logger.LogInformation("Vechile Controller - Something went worng on Get");
             }
 
             return Ok(_response);
@@ -73,6 +79,8 @@ namespace AutoMobile.Web.Controllers
                 _response.IsSuccess = true;
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = _mapper.Map<VehicleDetailsDto>(vehicle);
+
+                _logger.LogInformation($"Vechile Controller - Fetched Record Successfully by Id - {id}");
             }
             catch (Exception ex)
             {
@@ -80,6 +88,8 @@ namespace AutoMobile.Web.Controllers
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 //_response.AddError(ex.Message.ToString());
                 _response.AddError(CommonMessage.SystemError);
+
+                _logger.LogInformation($"Vechile Controller - Something went worng on GetById - {id}");
             }
 
             return Ok(_response);
@@ -109,12 +119,15 @@ namespace AutoMobile.Web.Controllers
                 _response.IsSuccess = true;
                 _response.Result = vehicle;
                 _response.DisplayMessage = CommonMessage.RecordCreated;
+                _logger.LogInformation($"Vechile Controller - Record Created Successfully Id- {vehicle.Id}");
             }
             catch (Exception ex)
             {
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 //_response.AddError(ex.Message.ToString());
                 _response.AddError(CommonMessage.SystemError);
+
+                _logger.LogInformation("Vechile Controller - Something went worng on Create Operation");
             }
 
             return Ok(_response);
@@ -131,21 +144,25 @@ namespace AutoMobile.Web.Controllers
 
                 }
 
-                var villa = _mapper.Map<Vehicle>(dto);
+                var vehicle = _mapper.Map<Vehicle>(dto);
 
-                await _unitOfWork.Vehicle.Update(villa);
+                await _unitOfWork.Vehicle.Update(vehicle);
 
                 await _unitOfWork.SaveAsync();
 
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
                 _response.DisplayMessage = CommonMessage.RecordUpdated;
+
+                _logger.LogInformation($"Vechile Controller - Record Updated Successfully Id- {vehicle.Id}");
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 //_response.AddError(ex.Message.ToString());
                 _response.AddError(CommonMessage.SystemError);
+
+                _logger.LogInformation("Vechile Controller - Something went worng on Update Operation");
             }
 
             return Ok(_response);
@@ -173,12 +190,16 @@ namespace AutoMobile.Web.Controllers
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
                 _response.DisplayMessage = CommonMessage.RecordDeleted;
+
+                _logger.LogInformation($"Vechile Controller - Record Deleted Successfully Id- {id}");
+
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 //_response.AddError(ex.Message.ToString());
                 _response.AddError(CommonMessage.SystemError);
+                _logger.LogInformation("Vechile Controller - Something went worng on Delete Operation");
             }
 
             return Ok(_response);

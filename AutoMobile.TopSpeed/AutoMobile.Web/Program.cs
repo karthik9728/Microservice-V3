@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Security.Principal;
 using System.Text;
 
@@ -17,6 +18,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CustomPolicy", x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
+
+
+builder.Host.UseSerilog((context, config) =>
+{
+    config.WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day);
+
+    if(context.HostingEnvironment.IsProduction() == false)
+    {
+        config.WriteTo.Console();
+    }
+
 });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
