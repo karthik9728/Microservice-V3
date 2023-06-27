@@ -45,6 +45,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 #region Serivces
 
 builder.Services.AddScoped<IAuthManager, AuthManager>();
+builder.Services.AddScoped<IEmailService,EmailService>();
 
 #endregion
 

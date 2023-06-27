@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using AutoMobile.Domain.ViewModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace AutoMobile.Web.Controllers
 {
@@ -164,6 +165,33 @@ namespace AutoMobile.Web.Controllers
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.IsSuccess = true;
                 _response.Result = roles;
+            }
+            catch (Exception ex)
+            {
+                _response.AddError(ex.ToString());
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("EmailConfirmation")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse>> EmailConfirmation([Required] string UserId, [Required] string Token)
+        {
+            try
+            {
+                var authResponse = await _authManager.EmailConfirmation(UserId, Token);
+                if (!authResponse)
+                {
+                    _response.AddError("Email is Not Verified");
+                }
+                else
+                {
+                    _response.IsSuccess = true;
+                    _response.StatusCode = HttpStatusCode.OK;
+                    _response.DisplayMessage = "Email is Successfully Verified";
+                }
             }
             catch (Exception ex)
             {

@@ -29,18 +29,21 @@ namespace AutoMobile.Application.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
         private ApplicationUser user;
 
         private const string _loginProvider = "AutoMobileProvider";
         private const string _refreshToken = "RefreshToken";
 
-        public AuthManager(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IMapper mapper, IConfiguration configuration)
+        public AuthManager(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IMapper mapper, IConfiguration configuration, IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _mapper = mapper;
             _configuration = configuration;
+            _emailService = emailService;
+
         }
 
         public async Task<IEnumerable<IdentityError>> AdminSignUp(AdminRegisterInputModel registerInputModel)
@@ -96,6 +99,16 @@ namespace AutoMobile.Application.Services
                 if (isRoleExists)
                 {
                     await _userManager.AddToRoleAsync(user, CustomRole.Customer);
+
+                    var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    string codeHtmlVersion = HttpUtility.UrlEncode(confirmationToken);
+
+                    //var link = $"https://localhost:7000/api/usermanagement/User/EmailConfirmation?UserId={user.Id}&Token={codeHtmlVersion}";
+
+                    var link = $"https://localhost:7143/Auth/EmailConfirmation?UserId={user.Id}&Token={codeHtmlVersion}";
+
+                    await _emailService.EmailVerification(user.Email, link);
                 }
                 else
                 {
@@ -227,9 +240,18 @@ namespace AutoMobile.Application.Services
             return roles;
         }
 
-        public Task<bool> EmailConfirmation(string userId, string token)
+        public async Task<bool> EmailConfirmation(string userId, string token)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public Task<IEnumerable<IdentityError>> ChangePassword(ChangePasswordInputModel changePasswordInputModel)
