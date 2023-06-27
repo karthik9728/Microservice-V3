@@ -17,6 +17,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using static AutoMobile.Application.ApplicationConstants.ApplicationConstant;
 
 namespace AutoMobile.Application.Services
 {
@@ -39,6 +40,23 @@ namespace AutoMobile.Application.Services
             _configuration = configuration;
         }
 
+        public async Task<IEnumerable<IdentityError>> AdminSignUp(AdminRegisterInputModel registerInputModel)
+        {
+            user = _mapper.Map<ApplicationUser>(registerInputModel);
+            user.UserName = registerInputModel.Email;
+
+            //Register
+            var result = await _userManager.CreateAsync(user, registerInputModel.Password);
+
+            if (result.Succeeded)
+            {
+                //Adding Roles to user
+                await _userManager.AddToRoleAsync(user,registerInputModel.Role);
+            }
+
+            return result.Errors;
+        }
+
         public async Task<IEnumerable<IdentityError>> SignUp(RegisterInputModel registerInputModel)
         {
             user = _mapper.Map<ApplicationUser>(registerInputModel);
@@ -47,8 +65,16 @@ namespace AutoMobile.Application.Services
             //Register
             var result = await _userManager.CreateAsync(user, registerInputModel.Password);
 
+            if (result.Succeeded)
+            {
+                //Adding Roles to user
+                await _userManager.AddToRoleAsync(user, CustomRole.Customer);
+            }
+
             return result.Errors;
         }
+
+     
 
         public async Task<object> SignIn(LoginInputModel loginInputModel)
         {
@@ -61,6 +87,7 @@ namespace AutoMobile.Application.Services
 
             if (result.Succeeded)
             {
+               
                 var token = await GenerateToken();
 
                 return new AuthResponseVM
@@ -139,6 +166,32 @@ namespace AutoMobile.Application.Services
                 return true;
             }
             return false;
+        }
+
+
+        public Task<bool> EmailConfirmation(string userId, string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<IdentityError>> ChangePassword(ChangePasswordInputModel changePasswordInputModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ForgetPassword(string emailId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ResetPassword(string userId, string token, string newPassword)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> IsUserExistsByUserId(string userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

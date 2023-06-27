@@ -13,10 +13,23 @@ namespace AutoMobile.Application.Services.Interface
 {
     public interface IAuthManager
     {
+        Task<IEnumerable<IdentityError>> AdminSignUp(AdminRegisterInputModel registerInputModel);
+
         Task<IEnumerable<IdentityError>> SignUp(RegisterInputModel registerInputModel);
 
         Task<object> SignIn(LoginInputModel loginInputModel);
 
+        Task<bool> EmailConfirmation(string userId, string token);
+
+        Task<IEnumerable<IdentityError>> ChangePassword(ChangePasswordInputModel changePasswordInputModel);
+
+        Task<bool> ForgetPassword(string emailId);
+
+        Task<bool> ResetPassword(string userId, string token, string newPassword);
+
+
         Task<bool> IsUserExists(string emailId);
+
+        Task<bool> IsUserExistsByUserId(string userId);
     }
 }

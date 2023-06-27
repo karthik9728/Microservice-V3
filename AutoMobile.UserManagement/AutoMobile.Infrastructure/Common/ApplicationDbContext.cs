@@ -15,5 +15,12 @@ namespace AutoMobile.Infrastructure.Common
         {
 
         }
+
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
     }
 }
