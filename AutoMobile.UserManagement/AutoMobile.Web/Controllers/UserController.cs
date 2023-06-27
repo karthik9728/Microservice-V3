@@ -200,5 +200,80 @@ namespace AutoMobile.Web.Controllers
 
             return _response;
         }
+
+        [HttpPost]
+        [Route("ForgetPassword")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse>> ForgetPassword(string EmailId)
+        {
+            try
+            {
+                var isUserExsits = await _authManager.IsUserExists(EmailId);
+                if (isUserExsits)
+                {
+                    var result = await _authManager.ForgetPassword(EmailId);
+                    if (!result)
+                    {
+                        _response.AddError("Try Again Later");
+                        return _response;
+                    }
+                    else
+                    {
+                        _response.IsSuccess = true;
+                        _response.StatusCode = HttpStatusCode.OK;
+                        _response.DisplayMessage = "Password Reset Link Sent To Your Email";
+                    }
+                }
+                else
+                {
+                    _response.AddError("Invalid EmailId");
+                    return _response;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.AddError(ex.ToString());
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        [Route("ResetPassword")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse>> ResetPassword([Required] string UserId, [Required] string Token, [Required] string NewPassword)
+        {
+            try
+            {
+                var isUserExsits = await _authManager.IsUserExistsByUserId(UserId);
+                if (isUserExsits)
+                {
+                    var result = await _authManager.ResetPassword(UserId, Token, NewPassword);
+                    if (!result)
+                    {
+                        _response.AddError("Try Again Later");
+                        return _response;
+                    }
+                    else
+                    {
+                        _response.IsSuccess = true;
+                        _response.StatusCode = HttpStatusCode.OK;
+                        _response.DisplayMessage = "Password Reseted Successfully";
+                    }
+                }
+                else
+                {
+                    _response.AddError("Invalid EmailId");
+                    return _response;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.AddError(ex.ToString());
+            }
+
+            return _response;
+        }
+
     }
 }

@@ -57,7 +57,7 @@ namespace AutoMobile.Application.Services
             if (result.Succeeded)
             {
                 //Adding Roles to user
-               var isRoleExists = await _roleManager.RoleExistsAsync(registerInputModel.Role);
+                var isRoleExists = await _roleManager.RoleExistsAsync(registerInputModel.Role);
 
                 if (isRoleExists)
                 {
@@ -125,13 +125,13 @@ namespace AutoMobile.Application.Services
                     errors.Add(customError);
                     result = IdentityResult.Failed(errors.ToArray());
                 }
-               
+
             }
 
             return result.Errors;
         }
 
-     
+
 
         public async Task<object> SignIn(LoginInputModel loginInputModel)
         {
@@ -144,7 +144,7 @@ namespace AutoMobile.Application.Services
 
             if (result.Succeeded)
             {
-               
+
                 var token = await GenerateToken();
 
                 return new AuthResponseVM
@@ -259,19 +259,45 @@ namespace AutoMobile.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> ForgetPassword(string emailId)
+        public async Task<bool> ForgetPassword(string emailId)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByEmailAsync(emailId);
+            if (user != null)
+            {
+                var confirmationToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                string codeHtmlVersion = HttpUtility.UrlEncode(confirmationToken);
+
+                var link = $"https://localhost:7143/Auth/ResetPassword?UserId={user.Id}&Token={codeHtmlVersion}";
+
+                await _emailService.ForgetPassword(user.Email, link);
+                return true;
+            }
+            return false;
         }
 
-        public Task<bool> ResetPassword(string userId, string token, string newPassword)
+        public async Task<bool> ResetPassword(string userId, string token, string newPassword)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+                if (result.Succeeded)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
-        public Task<bool> IsUserExistsByUserId(string userId)
+        public async Task<bool> IsUserExistsByUserId(string userId)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
