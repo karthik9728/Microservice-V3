@@ -102,13 +102,19 @@ namespace AutoMobile.Web.Controllers
 
             if (response != null && response.IsSuccess)
             {
-                return RedirectToAction(nameof(Login));
+                return RedirectToAction(nameof(RegisterVerification));
             }
             else
             {
                 ModelState.AddModelError("CustomError", response.Errors.FirstOrDefault().Description);
                 return View(registerationRequestDto);
             }
+        }
+
+
+        public IActionResult RegisterVerification()
+        {
+            return View();
         }
 
         [HttpGet]
