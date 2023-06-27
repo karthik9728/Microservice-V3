@@ -19,7 +19,7 @@ namespace AutoMobile.Application.Services
 
         private readonly IConfiguration _configuration;
 
-        public AuthService(IHttpClientFactory httpClientFactory,IHttpContextAccessor httpContextAccessor,IConfiguration configuration) : base(httpClientFactory,httpContextAccessor)
+        public AuthService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(httpClientFactory, httpContextAccessor)
         {
             _configuration = configuration;
             APIGatewayUrl = _configuration["ServiceUrls:APIGateway"];
@@ -72,6 +72,24 @@ namespace AutoMobile.Application.Services
             {
                 ApiType = ApplicationEnum.ApiType.POST,
                 Url = APIGatewayUrl + "/api/usermanagement/User/EmailConfirmation" + queryString,
+            });
+        }
+
+        public Task<T> ForgetPasswordAsync<T>(string emailId)
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = ApplicationEnum.ApiType.POST,
+                Url = APIGatewayUrl + "/api/usermanagement/User/ForgetPassword?EmailId=" + emailId,
+            });
+        }
+
+        public Task<T> ResetPasswordAsync<T>(string queryString)
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = ApplicationEnum.ApiType.POST,
+                Url = APIGatewayUrl + "/api/usermanagement/User/ResetPassword" + queryString,
             });
         }
     }

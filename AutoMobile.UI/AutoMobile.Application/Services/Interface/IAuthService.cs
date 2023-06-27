@@ -18,5 +18,9 @@ namespace AutoMobile.Application.Services.Interface
         Task<T> GetRolesAsync<T>();
 
         Task<T> EmailConfirmationAsync<T>(string queryString);
+
+        Task<T> ForgetPasswordAsync<T>(string emailId);
+
+        Task<T> ResetPasswordAsync<T>(string queryString);
     }
 }

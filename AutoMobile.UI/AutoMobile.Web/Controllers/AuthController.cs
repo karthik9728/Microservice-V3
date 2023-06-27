@@ -125,7 +125,7 @@ namespace AutoMobile.Web.Controllers
                 AdminRegisterVM adminRegisterVM = new AdminRegisterVM
                 {
                     RegisterationRequestDto = new AdminRegisterationRequestDto(),
-                    RolesList = roles.Order().Select(x=> new SelectListItem
+                    RolesList = roles.Order().Select(x => new SelectListItem
                     {
                         Text = x,
                         Value = x.ToString()
@@ -136,7 +136,7 @@ namespace AutoMobile.Web.Controllers
             }
 
             return View();
-           
+
         }
 
         [HttpPost]
@@ -165,7 +165,7 @@ namespace AutoMobile.Web.Controllers
             return View();
         }
 
-        [HttpPost,ActionName("EmailConfirmation")]
+        [HttpPost, ActionName("EmailConfirmation")]
         public async Task<IActionResult> EmailConfirmationPost()
         {
             var queryString = HttpContext.Request.QueryString.ToString();
@@ -192,13 +192,64 @@ namespace AutoMobile.Web.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(string emailId)
+        {
+            var response = await _authService.ForgetPasswordAsync<ApiResponse>(emailId);
+
+            if (response.IsSuccess)
+            {
+                return RedirectToAction(nameof(PasswordReset));
+            }
+
+            return View();
+        }
+
+        public IActionResult PasswordReset()
+        {
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(string newPassword)
+        {
+            var queryString = HttpContext.Request.QueryString.ToString() + $"&&newPassword={newPassword}";
+
+            var response = await _authService.ResetPasswordAsync<ApiResponse>(queryString);
+
+            if(response.IsSuccess) 
+            { 
+                return RedirectToAction(nameof(ResetPasswordSuccess));
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ResetPasswordSuccess()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
 
             HttpContext.Response.Cookies.Delete(ApplicationConstant.SessionToken);
-
-            //HttpContext.Session.SetString(ApplicationConstant.SessionToken, "");
 
             return RedirectToAction("Login");
         }
