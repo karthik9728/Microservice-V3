@@ -39,7 +39,7 @@ builder.Services.AddSession(options =>
 });
 
 
-
+builder.Services.AddScoped<IJwtHelper, JwtHelper>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddControllersWithViews();

@@ -12,5 +12,9 @@ namespace AutoMobile.Application.Services.Interface
         Task<T> LoginAsync<T>(LoginRequestDto loginRequestDto);
 
         Task<T> RegisterAsync<T>(RegisterationRequestDto registerationRequestDto);
+
+        Task<T> AdminRegisterAsync<T>(AdminRegisterationRequestDto registerationRequestDto);
+
+        Task<T> GetRolesAsync<T>();
     }
 }

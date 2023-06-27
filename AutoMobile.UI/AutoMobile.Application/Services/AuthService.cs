@@ -46,5 +46,24 @@ namespace AutoMobile.Application.Services
                 Data = registerationRequestDto
             });
         }
+
+        public Task<T> AdminRegisterAsync<T>(AdminRegisterationRequestDto registerationRequestDto)
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = ApplicationEnum.ApiType.POST,
+                Url = APIGatewayUrl + "/api/usermanagement/User/AdminSignUp",
+                Data = registerationRequestDto
+            });
+        }
+
+        public Task<T> GetRolesAsync<T>()
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = ApplicationEnum.ApiType.GET,
+                Url = APIGatewayUrl + "/api/usermanagement/User/Roles",
+            });
+        }
     }
 }
