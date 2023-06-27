@@ -123,37 +123,6 @@ namespace AutoMobile.Application.Services
             </div>
         </div>
     </body>
-<script>
-    document.getElementById('verifyButton').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default link behavior
-
-        // Make AJAX request to your API
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', " + body + @", true); // Replace '/api/verify' with your actual API endpoint
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-        // Define the data to be sent in the request body
-        var data = {
-            // Add any necessary data properties for the POST request
-        };
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    // Handle successful verification
-                    alert('Account verified successfully!');
-                    // You can redirect the user to a success page or perform any other necessary actions
-                } else {
-                    // Handle verification error
-                    alert('Failed to verify account. Please try again later.');
-                }
-            }
-        };
-
-        xhr.send(JSON.stringify(data));
-    });
-</script>
-
     </html>";
             #endregion
 
