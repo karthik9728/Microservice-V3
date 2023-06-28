@@ -12,7 +12,7 @@ using System.Net;
 
 namespace AutoMobile.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/topspeed/[controller]")]
     [ApiController]
     public class VehicleController : ControllerBase
