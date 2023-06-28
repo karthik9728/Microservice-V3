@@ -323,6 +323,21 @@ namespace AutoMobile.Application.Services
             return customers;
         }
 
+        public async Task<ApplicationUserVM> GetUserById(string id)
+        {
+            ApplicationUserVM customer = new ApplicationUserVM();
+
+            string[] roleNames = { CustomRole.PremiumCustomer, CustomRole.Customer };
+
+            var user = await _userManager.FindByIdAsync(id);
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var userVM = _mapper.Map<ApplicationUserVM>(user);
+
+            userVM.Role = userRoles.FirstOrDefault();
+
+            return userVM;
+        }
+
         public async Task<bool> ChangeUserRole(string id,string role)
         {
             var user = await _userManager.FindByIdAsync(id);

@@ -322,6 +322,35 @@ namespace AutoMobile.Web.Controllers
             return _response;
         }
 
+        [HttpGet]
+        [Route("GetUserById")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse>> GetUserById(string Id)
+        {
+            try
+            {
+                var users = await _authManager.GetUserById(Id);
+
+                if (users != null)
+                {
+                    _response.IsSuccess = true;
+                    _response.StatusCode = HttpStatusCode.OK;
+                    _response.Result = users;
+                }
+                else
+                {
+                    _response.DisplayMessage = "No Records to Show";
+                }
+            }
+            catch (Exception ex)
+            {
+                //_response.AddError(ex.ToString());
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return _response;
+        }
+
 
         [HttpPost]
         [Route("ChangeUserRole")]
