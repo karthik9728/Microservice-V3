@@ -40,6 +40,7 @@ namespace AutoMobile.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = CustomRole.SuperAdmin + "," + CustomRole.MasterAdmin + "," + CustomRole.Admin + CustomRole.PremiumCustomer)]
         public async Task<IActionResult> Details(int id)
         {
             var token = Request.Cookies[ApplicationConstant.SessionToken];

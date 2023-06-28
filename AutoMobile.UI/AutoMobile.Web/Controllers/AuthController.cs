@@ -268,5 +268,21 @@ namespace AutoMobile.Web.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> GetUsers()
+        {
+            List<ApplicationUserDto> applicationUserDtos = new List<ApplicationUserDto>();
+
+            var response = await _authService.GetUsersAsync<ApiResponse>();
+
+            if (response !=null && response.IsSuccess)
+            {
+                applicationUserDtos = JsonConvert.DeserializeObject<List<ApplicationUserDto>>(Convert.ToString(response.Result));
+
+                return View(applicationUserDtos);
+            }
+
+            return View();
+        }
     }
 }

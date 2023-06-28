@@ -92,5 +92,14 @@ namespace AutoMobile.Application.Services
                 Url = APIGatewayUrl + "/api/usermanagement/User/ResetPassword" + queryString,
             });
         }
+
+        public Task<T> GetUsersAsync<T>()
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = ApplicationEnum.ApiType.GET,
+                Url = APIGatewayUrl + "/api/usermanagement/User/GetUsers",
+            });
+        }
     }
 }
