@@ -269,6 +269,7 @@ namespace AutoMobile.Web.Controllers
             return View();
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
             List<ApplicationUserDto> applicationUserDtos = new List<ApplicationUserDto>();
@@ -280,6 +281,37 @@ namespace AutoMobile.Web.Controllers
                 applicationUserDtos = JsonConvert.DeserializeObject<List<ApplicationUserDto>>(Convert.ToString(response.Result));
 
                 return View(applicationUserDtos);
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangeUserRole(string id)
+        {
+            ApplicationUserDto userDto = new ApplicationUserDto();
+
+            var response = await _authService.GetUserByIdAsync<ApiResponse>(id);
+
+            if(response != null && response.IsSuccess)
+            {
+                userDto = JsonConvert.DeserializeObject<ApplicationUserDto>(Convert.ToString(response.Result));
+
+                return View(userDto);
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeUserRole(ApplicationUserDto dto)
+        {
+
+            var response = await _authService.ChangeUserRoleAsync<ApiResponse>(dto.Id, dto.Role);
+
+            if(response !=null && response.IsSuccess)
+            {
+                return RedirectToAction(nameof(GetUsers));
             }
 
             return View();

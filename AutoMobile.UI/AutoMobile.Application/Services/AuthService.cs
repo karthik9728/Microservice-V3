@@ -101,5 +101,25 @@ namespace AutoMobile.Application.Services
                 Url = APIGatewayUrl + "/api/usermanagement/User/GetUsers",
             });
         }
+
+        public Task<T> GetUserByIdAsync<T>(string id)
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = ApplicationEnum.ApiType.GET,
+                Url = APIGatewayUrl + $"/api/usermanagement/User/GetUserById?Id={id}",
+            });
+        }
+
+        public Task<T> ChangeUserRoleAsync<T>(string id, string role)
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = ApplicationEnum.ApiType.POST,
+                Url = APIGatewayUrl + $"/api/usermanagement/User/ChangeUserRole?Id={id}&&Role={role}",
+            });
+        }
+
+
     }
 }
