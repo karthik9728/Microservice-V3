@@ -299,5 +299,47 @@ namespace AutoMobile.Application.Services
             }
             return false;
         }
+
+        public async Task<List<ApplicationUserVM>> GetUsers()
+        {
+            List<ApplicationUserVM> customers = new List<ApplicationUserVM>();
+
+            string[] roleNames = { CustomRole.PremiumCustomer, CustomRole.Customer };
+
+            var users = _userManager.Users.ToList();
+
+            foreach (var user in users)
+            {
+                var userRoles = await _userManager.GetRolesAsync(user);
+
+                if (userRoles.Intersect(roleNames).Any())
+                {
+                    var userVM = _mapper.Map<ApplicationUserVM>(user);
+                    userVM.Role = userRoles.Intersect(roleNames).FirstOrDefault();
+                    customers.Add(userVM);
+                }
+            }
+
+            return customers;
+        }
+
+        public async Task<bool> ChangeUserRole(string id,string role)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if(user != null)
+            {
+                var userRole = await _userManager.GetRolesAsync(user);
+
+                await _userManager.RemoveFromRolesAsync(user, userRole);
+
+                await _userManager.AddToRoleAsync(user, role);
+
+                return true;
+            }
+
+            return false;
+           
+        }
     }
 }

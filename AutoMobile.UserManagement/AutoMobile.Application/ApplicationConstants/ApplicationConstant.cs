@@ -14,6 +14,7 @@ namespace AutoMobile.Application.ApplicationConstants
             public const string SuperAdmin = "SUPERADMIN";
             public const string Admin = "ADMIN";
             public const string Customer = "CUSTOMER";
+            public const string PremiumCustomer = "PREMIUMCUSTOMER";
         }
 
         public class CommonMessage

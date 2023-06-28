@@ -23,7 +23,8 @@ namespace AutoMobile.Infrastructure.Common
                 new IdentityRole { Name = "SUPERADMIN",NormalizedName = "SUPERADMIN" },
                 new IdentityRole { Name = "MASTERADMIN",NormalizedName = "MASTERADMIN" },
                 new IdentityRole { Name = "ADMIN",NormalizedName = "ADMIN" },
-                new IdentityRole { Name = "CUSTOMER",NormalizedName = "CUSTOMER"}
+                new IdentityRole { Name = "CUSTOMER",NormalizedName = "CUSTOMER"},
+                new IdentityRole { Name = "PREMIUMCUSTOMER",NormalizedName = "PREMIUMCUSTOMER"}
             };
 
             foreach (var role in roles)

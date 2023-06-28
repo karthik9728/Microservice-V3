@@ -292,5 +292,65 @@ namespace AutoMobile.Web.Controllers
             return _response;
         }
 
+
+        [HttpGet]
+        [Route("GetUsers")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse>> GetUsers()
+        {
+            try
+            {
+               var users = await _authManager.GetUsers();
+
+                if(users != null)
+                {
+                    _response.IsSuccess = true;
+                    _response.StatusCode = HttpStatusCode.OK;
+                    _response.Result = users;
+                }
+                else
+                {
+                    _response.DisplayMessage = "No Records to Show";
+                }
+            }
+            catch (Exception ex)
+            {
+                //_response.AddError(ex.ToString());
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return _response;
+        }
+
+
+        [HttpPost]
+        [Route("ChangeUserRole")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse>> ChangeUserRole([Required]string Id,[Required] string Role)
+        {
+            try
+            {
+                var result = await _authManager.ChangeUserRole(Id,Role);
+
+                if (result)
+                {
+                    _response.IsSuccess = true;
+                    _response.StatusCode = HttpStatusCode.OK;
+                    _response.DisplayMessage = "User Role Changed Successfully";
+                }
+                else
+                {
+                    _response.AddError("Somthing went worng role not updated");
+                }
+            }
+            catch (Exception ex)
+            {
+                //_response.AddError(ex.ToString());
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return _response;
+        }
+
     }
 }

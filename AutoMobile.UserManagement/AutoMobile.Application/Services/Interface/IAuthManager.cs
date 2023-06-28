@@ -33,5 +33,9 @@ namespace AutoMobile.Application.Services.Interface
         Task<bool> IsUserExistsByUserId(string userId);
 
         Task<List<string>> GetRoles();
+
+        Task<List<ApplicationUserVM>> GetUsers();
+
+        Task<bool> ChangeUserRole(string id, string role);
     }
 }
