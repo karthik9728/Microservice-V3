@@ -6,10 +6,10 @@ using AutoMobile.Domain.DTO.Vehicle;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using static AutoMobile.Application.ApplicationContants.ApplicationConstant;
 
 namespace AutoMobile.Web.Controllers
 {
-    [Authorize]
     public class VehicleController : Controller
     {
 
@@ -40,7 +40,6 @@ namespace AutoMobile.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
             var token = Request.Cookies[ApplicationConstant.SessionToken];
@@ -58,6 +57,7 @@ namespace AutoMobile.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = CustomRole.SuperAdmin + "," + CustomRole.MasterAdmin + "," + CustomRole.Admin)]
         public IActionResult Create()
         {
             VehicleCreateDto vehicleCreateDto = new VehicleCreateDto();
@@ -66,6 +66,7 @@ namespace AutoMobile.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = CustomRole.SuperAdmin + "," + CustomRole.MasterAdmin + "," + CustomRole.Admin)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VehicleCreateDto dto)
         {
@@ -89,6 +90,7 @@ namespace AutoMobile.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = CustomRole.SuperAdmin + "," + CustomRole.MasterAdmin)]
         public async Task<IActionResult> Update(int id)
         {
             var token = Request.Cookies[ApplicationConstant.SessionToken];
@@ -106,6 +108,7 @@ namespace AutoMobile.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = CustomRole.SuperAdmin + "," + CustomRole.MasterAdmin)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(VehicleUpdateDto dto)
         {
@@ -129,6 +132,7 @@ namespace AutoMobile.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = CustomRole.SuperAdmin)]
         public async Task<IActionResult> Delete(int id)
         {
             var token = Request.Cookies[ApplicationConstant.SessionToken];
@@ -146,6 +150,7 @@ namespace AutoMobile.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = CustomRole.SuperAdmin)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(VehicleDetailsDto dto)
         {
