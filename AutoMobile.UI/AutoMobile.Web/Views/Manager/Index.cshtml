@@ -1,0 +1,62 @@
+﻿@using AutoMobile.Application.ApplicationContants;
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <p class="fs-3 text-uppercase" style="font-weight:600;color:#245953">Manager's' Screen</p>
+            <hr />
+        </div>
+    </div>
+    <br />
+    <div class="row align-items-center justify-content-center border border-1 p-3 g-2 rounded" style="background-color:#F6F1F1">
+        <div class="col-md-3">
+            @if (User.HasClaim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager))
+            {
+                <a class="card-link" asp-controller="Manager" asp-action="JuniorManager">
+                    <div class="card hover-card">
+                        <div class="card-body text-center text-uppercase" style="font-weight:700">
+                            Junior Manager
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+        <div class="col-md-3">
+            @if (User.HasClaim(CustomClaimType.ManagerType, CustomClaimValue.SeniorManager))
+            {
+                <a class="card-link" asp-controller="Manager" asp-action="SeniorManager">
+                    <div class="card hover-card">
+                        <div class="card-body text-center text-uppercase" style="font-weight:700">
+                            Senior Manager
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+        <div class="col-md-3">
+            @if (User.HasClaim(CustomClaimType.ManagerType, CustomClaimValue.AssistantManager))
+            {
+                <a class="card-link" asp-controller="Manager" asp-action="AssistantManager">
+                    <div class="card hover-card">
+                        <div class="card-body text-center text-uppercase" style="font-weight:700">
+                            AssistantManager
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+
+        <div class="col-md-3">
+            @if (User.HasClaim(CustomClaimType.ManagerType, CustomClaimValue.AssociateProductManager))
+            {
+                <a class="card-link" asp-controller="Manager" asp-action="AssociateProductManager">
+                    <div class="card hover-card">
+                        <div class="card-body text-center text-uppercase" style="font-weight:700">
+                            Associate Product Manager
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</div>

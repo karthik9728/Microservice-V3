@@ -20,3 +20,23 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.card-link {
+    text-decoration: none;
+}
+
+    .card-link:hover {
+        text-decoration: none;
+    }
+
+.hover-card {
+    color: white;
+    background-color: #5C469C;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.hover-card:hover {
+        color: yellow;
+        background-color: #1D267D;
+    }
