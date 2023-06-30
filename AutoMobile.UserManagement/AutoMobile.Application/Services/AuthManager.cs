@@ -327,7 +327,7 @@ namespace AutoMobile.Application.Services
         {
             ApplicationUserVM customer = new ApplicationUserVM();
 
-            string[] roleNames = { CustomRole.User };
+           // string[] roleNames = { CustomRole.User };
 
             var user = await _userManager.FindByIdAsync(id);
             var userRoles = await _userManager.GetRolesAsync(user);
