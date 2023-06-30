@@ -1,4 +1,5 @@
 ﻿using AutoMobile.Application.Services.Interface;
+using AutoMobile.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,7 +12,7 @@ namespace AutoMobile.Application.Services
 {
     public class JwtHelper : IJwtHelper
     {
-        public string ExtractRoleFromToken(string jwtToken)
+        public TokenData ExtractTokenData(string jwtToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -23,10 +24,27 @@ namespace AutoMobile.Application.Services
                 // Access the claims from the token.Claims property
                 var roleClaim = token.Claims.FirstOrDefault(x => x.Type == SystemConstants.Role.ToLower());
 
+                //// Extract all additional claims
+                //var additionalClaims = token.Claims.Where(x => x.Type != SystemConstants.Role.ToLower())
+                //                                   .ToDictionary(c => c.Type, c => c.Value);
+
+                // Extract all additional claims
+                var additionalClaims = token.Claims.Where(x => x.Type != SystemConstants.Role.ToLower() 
+                                                    && x.Type != "exp" && x.Type != "iss" && x.Type != "aud")
+                                                   .GroupBy(c => c.Type)
+                                                   .ToDictionary(g => g.Key, g => g.Select(c => c.Value).ToArray());
+
                 if (roleClaim != null)
                 {
                     // Extract the value of the "role" claim
-                    return roleClaim.Value;
+                    var role = roleClaim.Value;
+
+                    // Return a custom object containing both the role and additional claims
+                    return new TokenData
+                    {
+                        Role = role,
+                        AdditionalClaims = additionalClaims
+                    };
                 }
                 else
                 {
@@ -41,5 +59,6 @@ namespace AutoMobile.Application.Services
                 return null;
             }
         }
+
     }
 }

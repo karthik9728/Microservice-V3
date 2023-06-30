@@ -48,13 +48,21 @@ namespace AutoMobile.Web.Controllers
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
 
                 //Extract Role from Token
-                var role = _jwtHelper.ExtractRoleFromToken(model.Token);
+                var tokenData = _jwtHelper.ExtractTokenData(model.Token);
 
                 identity.AddClaim(new Claim(ClaimTypes.Name, model.UserId));
 
-                if (role != null)
+                if (tokenData != null)
                 {
-                    identity.AddClaim(new Claim(ClaimTypes.Role, role.ToUpper()));
+                    identity.AddClaim(new Claim(ClaimTypes.Role, tokenData.Role.ToUpper()));
+
+                    foreach (var claim in tokenData.AdditionalClaims)
+                    {
+                        foreach (var claimValue in claim.Value)
+                        {
+                            identity.AddClaim(new Claim(claim.Key, claimValue));
+                        }
+                    }
                 }
 
                 var principle = new ClaimsPrincipal(identity);

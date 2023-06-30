@@ -2,6 +2,7 @@ using AutoMobile.Application.Services.Interface;
 using AutoMobile.Application.Services;
 using AutoMobile.Domain.Common;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using AutoMobile.Application.ApplicationContants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,34 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Auth/Login";
         options.AccessDeniedPath = "/Auth/AccessDenied";
     });
+
+#region Configure Authorization
+
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(CustomClaimPolicy.JuniorManagerPolicy, policy =>
+    {
+        policy.RequireClaim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager);
+    });
+
+    options.AddPolicy(CustomClaimPolicy.SeniorManagerPolicy, policy =>
+    {
+        policy.RequireClaim(CustomClaimType.ManagerType, CustomClaimValue.SeniorManager);
+    });
+
+    options.AddPolicy(CustomClaimPolicy.AssistantManagerPolicy, policy =>
+    {
+        policy.RequireClaim(CustomClaimType.ManagerType, CustomClaimValue.AssistantManager);
+    });
+
+    options.AddPolicy(CustomClaimPolicy.AssociateProductManagerPolicy, policy =>
+    {
+        policy.RequireClaim(CustomClaimType.ManagerType, CustomClaimValue.AssociateProductManager);
+    });
+});
+
+#endregion
 
 
 builder.Services.AddSession(options =>
