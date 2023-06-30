@@ -25,8 +25,6 @@ namespace AutoMobile.Infrastructure.Common
                 new IdentityRole { Name = "SUPERADMIN",NormalizedName = "SUPERADMIN" },
                 new IdentityRole { Name = "MASTERADMIN",NormalizedName = "MASTERADMIN" },
                 new IdentityRole { Name = "ADMIN",NormalizedName = "ADMIN" },
-                new IdentityRole { Name = "CUSTOMER",NormalizedName = "CUSTOMER"},
-                new IdentityRole { Name = "PREMIUMCUSTOMER",NormalizedName = "PREMIUMCUSTOMER"},
                 new IdentityRole { Name = "USER",NormalizedName = "USER"}
             };
 
@@ -94,20 +92,20 @@ namespace AutoMobile.Infrastructure.Common
                     await userManager.AddToRoleAsync(masterAdmin, CustomRole.MasterAdmin);
                 }
 
-                ApplicationUser customer = new ApplicationUser
+                ApplicationUser admin = new ApplicationUser
                 {
-                    Email = "customer@gmail.com",
-                    UserName = "customer@gmail.com",
+                    Email = "admin@gmail.com",
+                    UserName = "admin@gmail.com",
                     FirstName = "Jhon",
                     LastName = "Doe",
                     EmailConfirmed = true
                 };
 
-                var customerResult = await userManager.CreateAsync(customer, "Customer@123");
+                var adminResult = await userManager.CreateAsync(admin, "Admin@123");
 
-                if (customerResult.Succeeded)
+                if (adminResult.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(customer, CustomRole.Customer);
+                    await userManager.AddToRoleAsync(admin, CustomRole.Admin);
 
                 }
 
@@ -146,13 +144,71 @@ namespace AutoMobile.Infrastructure.Common
                 {
                     await userManager.AddToRoleAsync(userTwo, CustomRole.User);
 
-                    var claim = new Claim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager);
+                    var claims = new List<Claim>()
+                    {
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager),
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.SeniorManager)
+                    };
 
-                    await userManager.AddClaimAsync(userTwo, claim);
+                    await userManager.AddClaimsAsync(userTwo, claims);
 
                     await applicationDbContext.SaveChangesAsync();
                 }
 
+                ApplicationUser userThree = new ApplicationUser
+                {
+                    Email = "userThree@gmail.com",
+                    UserName = "userThree@gmail.com",
+                    FirstName = "Jhon",
+                    LastName = "Doe 3",
+                    EmailConfirmed = true
+                };
+
+                var userThreeResult = await userManager.CreateAsync(userThree, "User@123");
+
+                if (userThreeResult.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(userThree, CustomRole.User);
+
+                    var claims = new List<Claim>()
+                    {
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager),
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.SeniorManager),
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.AssistantManager)
+                    };
+
+                    await userManager.AddClaimsAsync(userThree, claims);
+
+                    await applicationDbContext.SaveChangesAsync();
+                }
+
+                ApplicationUser userFour = new ApplicationUser
+                {
+                    Email = "userFour@gmail.com",
+                    UserName = "userFour@gmail.com",
+                    FirstName = "Jhon",
+                    LastName = "Doe 4",
+                    EmailConfirmed = true
+                };
+
+                var userFourResult = await userManager.CreateAsync(userFour, "User@123");
+
+                if (userFourResult.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(userFour, CustomRole.User);
+
+                    var claims = new List<Claim>()
+                    {
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager),
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.SeniorManager),
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.AssistantManager),
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.AssociateProductManager)
+                    };
+
+                    await userManager.AddClaimsAsync(userFour, claims);
+
+                    await applicationDbContext.SaveChangesAsync();
+                }
 
             }
         }

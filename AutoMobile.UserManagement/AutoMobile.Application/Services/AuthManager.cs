@@ -94,11 +94,11 @@ namespace AutoMobile.Application.Services
             if (result.Succeeded)
             {
                 //Adding Roles to user
-                var isRoleExists = await _roleManager.RoleExistsAsync(CustomRole.Customer);
+                var isRoleExists = await _roleManager.RoleExistsAsync(CustomRole.User);
 
                 if (isRoleExists)
                 {
-                    await _userManager.AddToRoleAsync(user, CustomRole.Customer);
+                    await _userManager.AddToRoleAsync(user, CustomRole.User);
 
                     var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
@@ -304,7 +304,7 @@ namespace AutoMobile.Application.Services
         {
             List<ApplicationUserVM> customers = new List<ApplicationUserVM>();
 
-            string[] roleNames = { CustomRole.PremiumCustomer, CustomRole.Customer };
+            string[] roleNames = { CustomRole.User };
 
             var users = _userManager.Users.ToList();
 
@@ -327,7 +327,7 @@ namespace AutoMobile.Application.Services
         {
             ApplicationUserVM customer = new ApplicationUserVM();
 
-            string[] roleNames = { CustomRole.PremiumCustomer, CustomRole.Customer };
+            string[] roleNames = { CustomRole.User };
 
             var user = await _userManager.FindByIdAsync(id);
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -338,11 +338,11 @@ namespace AutoMobile.Application.Services
             return userVM;
         }
 
-        public async Task<bool> ChangeUserRole(string id,string role)
+        public async Task<bool> ChangeUserRole(string id, string role)
         {
             var user = await _userManager.FindByIdAsync(id);
 
-            if(user != null)
+            if (user != null)
             {
                 var userRole = await _userManager.GetRolesAsync(user);
 
@@ -354,7 +354,7 @@ namespace AutoMobile.Application.Services
             }
 
             return false;
-           
+
         }
 
         public async Task<bool> AddOrRemoveClaim(AddOrRemoveClaimInputModel addOrRemoveClaim)
