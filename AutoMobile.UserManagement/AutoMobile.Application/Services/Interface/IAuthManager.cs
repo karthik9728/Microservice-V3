@@ -39,5 +39,7 @@ namespace AutoMobile.Application.Services.Interface
         Task<ApplicationUserVM> GetUserById(string id);
 
         Task<bool> ChangeUserRole(string id, string role);
+
+        Task<bool> AddOrRemoveClaim(AddOrRemoveClaimInputModel addOrRemoveClaim);
     }
 }

@@ -18,6 +18,8 @@ namespace AutoMobile.Infrastructure.Common
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
+        public DbSet<CustomClaimTypeValue> CustomClaimTypeValue { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

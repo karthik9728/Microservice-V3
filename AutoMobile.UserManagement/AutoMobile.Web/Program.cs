@@ -1,3 +1,4 @@
+using AutoMobile.Application.ApplicationConstants;
 using AutoMobile.Application.Services;
 using AutoMobile.Application.Services.Interface;
 using AutoMobile.Domain.Common;
@@ -49,7 +50,7 @@ builder.Host.UseSerilog((context, config) =>
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
-    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedEmail = true ;
 })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("AutoMobileProvider")
@@ -90,6 +91,33 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
 
     };
+});
+
+#endregion
+
+#region Configure Authorization
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(CustomClaimPolicy.JuniorManagerPolicy, policy =>
+    {
+        policy.RequireClaim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager);
+    });
+
+    options.AddPolicy(CustomClaimPolicy.SeniorManagerPolicy, policy =>
+    {
+        policy.RequireClaim(CustomClaimType.ManagerType, CustomClaimValue.SeniorManager);
+    });
+
+    options.AddPolicy(CustomClaimPolicy.AssistantManagerPolicy, policy =>
+    {
+        policy.RequireClaim(CustomClaimType.ManagerType, CustomClaimValue.AssistantManager);
+    });
+
+    options.AddPolicy(CustomClaimPolicy.AssociateProductManagerPolicy, policy =>
+    {
+        policy.RequireClaim(CustomClaimType.ManagerType, CustomClaimValue.AssociateProductManager);
+    });
 });
 
 #endregion

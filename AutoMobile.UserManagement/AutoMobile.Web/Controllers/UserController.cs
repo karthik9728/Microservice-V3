@@ -381,5 +381,34 @@ namespace AutoMobile.Web.Controllers
             return _response;
         }
 
+        [HttpPost]
+        [Route("AddOrRemoveClaim")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse>> AddOrRemoveClaim(AddOrRemoveClaimInputModel claim)
+        {
+            try
+            {
+                var result = await _authManager.AddOrRemoveClaim(claim);
+
+                if (result)
+                {
+                    _response.IsSuccess = true;
+                    _response.StatusCode = HttpStatusCode.OK;
+                    _response.DisplayMessage = "User Claims Changed Successfully";
+                }
+                else
+                {
+                    _response.AddError("Somthing went worng calims not updated");
+                }
+            }
+            catch (Exception ex)
+            {
+                //_response.AddError(ex.ToString());
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return _response;
+        }
+
     }
 }

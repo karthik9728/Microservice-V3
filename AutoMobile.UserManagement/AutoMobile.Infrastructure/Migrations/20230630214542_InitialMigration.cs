@@ -53,6 +53,19 @@ namespace AutoMobile.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CustomClaimTypeValue",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomClaimTypeValue", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -215,6 +228,9 @@ namespace AutoMobile.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "CustomClaimTypeValue");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

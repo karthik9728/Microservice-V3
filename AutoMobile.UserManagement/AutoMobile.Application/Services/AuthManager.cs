@@ -356,5 +356,33 @@ namespace AutoMobile.Application.Services
             return false;
            
         }
+
+        public async Task<bool> AddOrRemoveClaim(AddOrRemoveClaimInputModel addOrRemoveClaim)
+        {
+            var user = await _userManager.FindByIdAsync(addOrRemoveClaim.UserId);
+
+            if (user != null)
+            {
+                var existingClaims = await _userManager.GetClaimsAsync(user);
+
+                // Remove existing claims that are not present in the input model
+                var claimsToRemove = existingClaims.Where(claim =>
+                    !addOrRemoveClaim.Claims.Any(c => c.ClaimType == claim.Type && c.ClaimValue == claim.Value));
+
+                var removeResult = await _userManager.RemoveClaimsAsync(user, claimsToRemove);
+
+                // Add new claims that are not already present
+                var claimsToAdd = addOrRemoveClaim.Claims.Where(claim =>
+                    !existingClaims.Any(c => c.Type == claim.ClaimType && c.Value == claim.ClaimValue))
+                    .Select(c => new Claim(c.ClaimType, c.ClaimValue));
+
+                var addResult = await _userManager.AddClaimsAsync(user, claimsToAdd);
+
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }
