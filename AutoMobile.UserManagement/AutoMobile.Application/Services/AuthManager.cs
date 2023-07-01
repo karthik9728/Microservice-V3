@@ -304,7 +304,7 @@ namespace AutoMobile.Application.Services
         {
             List<ApplicationUserVM> customers = new List<ApplicationUserVM>();
 
-            string[] roleNames = { CustomRole.User };
+            string[] roleNames = { CustomRole.User,CustomRole.PremiumUser };
 
             var users = _userManager.Users.ToList();
 
