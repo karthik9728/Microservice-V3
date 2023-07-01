@@ -13,8 +13,8 @@ namespace AutoMobile.Application.ApplicationContants
             public const string MasterAdmin = "MASTERADMIN";
             public const string SuperAdmin = "SUPERADMIN";
             public const string Admin = "ADMIN";
-            public const string Customer = "CUSTOMER";
-            public const string PremiumCustomer = "PREMIUMCUSTOMER";
+            public const string User = "USER";
+            public const string PremiumUser = "PREMIUMUSER";
         }
     }
 

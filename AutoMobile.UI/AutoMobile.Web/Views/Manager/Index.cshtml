@@ -1,5 +1,10 @@
 ﻿@using AutoMobile.Application.ApplicationContants;
+@using static AutoMobile.Application.ApplicationContants.ApplicationConstant;
+@{
+    string[] roles = { CustomRole.SuperAdmin, CustomRole.MasterAdmin, CustomRole.Admin };
 
+    bool isInMultipleRoles = roles.Any(role => User.IsInRole(role));
+}
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-12 text-center">
@@ -10,7 +15,7 @@
     <br />
     <div class="row align-items-center justify-content-center border border-1 p-3 g-2 rounded" style="background-color:#F6F1F1">
         <div class="col-md-3">
-            @if (User.HasClaim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager))
+            @if (isInMultipleRoles || User.HasClaim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager))
             {
                 <a class="card-link" asp-controller="Manager" asp-action="JuniorManager">
                     <div class="card hover-card">
@@ -22,7 +27,7 @@
             }
         </div>
         <div class="col-md-3">
-            @if (User.HasClaim(CustomClaimType.ManagerType, CustomClaimValue.SeniorManager))
+            @if (isInMultipleRoles || User.HasClaim(CustomClaimType.ManagerType, CustomClaimValue.SeniorManager))
             {
                 <a class="card-link" asp-controller="Manager" asp-action="SeniorManager">
                     <div class="card hover-card">
@@ -34,7 +39,7 @@
             }
         </div>
         <div class="col-md-3">
-            @if (User.HasClaim(CustomClaimType.ManagerType, CustomClaimValue.AssistantManager))
+            @if (isInMultipleRoles || User.HasClaim(CustomClaimType.ManagerType, CustomClaimValue.AssistantManager))
             {
                 <a class="card-link" asp-controller="Manager" asp-action="AssistantManager">
                     <div class="card hover-card">
@@ -47,7 +52,7 @@
         </div>
 
         <div class="col-md-3">
-            @if (User.HasClaim(CustomClaimType.ManagerType, CustomClaimValue.AssociateProductManager))
+            @if (isInMultipleRoles || User.HasClaim(CustomClaimType.ManagerType, CustomClaimValue.AssociateProductManager))
             {
                 <a class="card-link" asp-controller="Manager" asp-action="AssociateProductManager">
                     <div class="card hover-card">
