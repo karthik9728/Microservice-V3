@@ -56,13 +56,17 @@ namespace AutoMobile.Web.Controllers
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Role, tokenData.Role.ToUpper()));
 
-                    foreach (var claim in tokenData.AdditionalClaims)
+                    if(tokenData.AdditionalClaims.Count > 0)
                     {
-                        foreach (var claimValue in claim.Value)
+                        foreach (var claim in tokenData.AdditionalClaims)
                         {
-                            identity.AddClaim(new Claim(claim.Key, claimValue));
+                            foreach (var claimValue in claim.Value)
+                            {
+                                identity.AddClaim(new Claim(claim.Key, claimValue));
+                            }
                         }
                     }
+                   
                 }
 
                 var principle = new ClaimsPrincipal(identity);
