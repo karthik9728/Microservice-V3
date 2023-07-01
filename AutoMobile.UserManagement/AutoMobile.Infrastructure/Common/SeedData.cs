@@ -1,4 +1,4 @@
-﻿using AutoMobile.Application.ApplicationConstants;
+﻿using AutoMobile.Domain.ApplicationConstants;
 using AutoMobile.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using static AutoMobile.Application.ApplicationConstants.ApplicationConstant;
+using static AutoMobile.Domain.ApplicationConstants.ApplicationConstant;
 
 namespace AutoMobile.Infrastructure.Common
 {
@@ -40,20 +40,6 @@ namespace AutoMobile.Infrastructure.Common
 
         public static async Task SeedDataAsync(ApplicationDbContext applicationDbContext, IServiceProvider serviceProvider)
         {
-
-            if (!applicationDbContext.CustomClaimTypeValue.Any())
-            {
-                await applicationDbContext.AddRangeAsync(
-
-                    new CustomClaimTypeValue(Guid.NewGuid(), CustomClaimType.ManagerType, CustomClaimValue.JuniorManager),
-                    new CustomClaimTypeValue(Guid.NewGuid(), CustomClaimType.ManagerType, CustomClaimValue.SeniorManager),
-                    new CustomClaimTypeValue(Guid.NewGuid(), CustomClaimType.ManagerType, CustomClaimValue.AssistantManager),
-                    new CustomClaimTypeValue(Guid.NewGuid(), CustomClaimType.ManagerType, CustomClaimValue.AssociateProductManager)
-                    );
-
-                await applicationDbContext.SaveChangesAsync();
-            }
-
 
             if (!applicationDbContext.ApplicationUser.Any())
             {

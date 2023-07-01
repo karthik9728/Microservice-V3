@@ -19,6 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using static AutoMobile.Application.ApplicationConstants.ApplicationConstant;
+using AutoMobile.Infrastructure.Common;
 
 namespace AutoMobile.Application.Services
 {
@@ -31,11 +32,12 @@ namespace AutoMobile.Application.Services
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
         private ApplicationUser user;
+        private readonly ApplicationDbContext _dbContext;
 
         private const string _loginProvider = "AutoMobileProvider";
         private const string _refreshToken = "RefreshToken";
 
-        public AuthManager(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IMapper mapper, IConfiguration configuration, IEmailService emailService)
+        public AuthManager(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IMapper mapper, IConfiguration configuration, IEmailService emailService, ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -43,7 +45,7 @@ namespace AutoMobile.Application.Services
             _mapper = mapper;
             _configuration = configuration;
             _emailService = emailService;
-
+            _dbContext = dbContext;
         }
 
         public async Task<IEnumerable<IdentityError>> AdminSignUp(AdminRegisterInputModel registerInputModel)
@@ -304,7 +306,7 @@ namespace AutoMobile.Application.Services
         {
             List<ApplicationUserVM> customers = new List<ApplicationUserVM>();
 
-            string[] roleNames = { CustomRole.User,CustomRole.PremiumUser };
+            string[] roleNames = { CustomRole.User, CustomRole.PremiumUser };
 
             var users = _userManager.Users.ToList();
 
@@ -327,7 +329,7 @@ namespace AutoMobile.Application.Services
         {
             ApplicationUserVM customer = new ApplicationUserVM();
 
-           // string[] roleNames = { CustomRole.User };
+            // string[] roleNames = { CustomRole.User };
 
             var user = await _userManager.FindByIdAsync(id);
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -357,6 +359,26 @@ namespace AutoMobile.Application.Services
 
         }
 
+        public async Task<List<ClaimInputModel>> GetUserClaim(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                var claims = await _userManager.GetClaimsAsync(user);
+
+                var claimInputModels = claims.Select(c => new ClaimInputModel
+                {
+                    ClaimType = c.Type,
+                    ClaimValue = c.Value
+                }).ToList();
+
+                return claimInputModels;
+            }
+
+            return null;
+        }
+
         public async Task<bool> AddOrRemoveClaim(AddOrRemoveClaimInputModel addOrRemoveClaim)
         {
             var user = await _userManager.FindByIdAsync(addOrRemoveClaim.UserId);
@@ -378,11 +400,12 @@ namespace AutoMobile.Application.Services
 
                 var addResult = await _userManager.AddClaimsAsync(user, claimsToAdd);
 
+                await _dbContext.SaveChangesAsync();
+
                 return true;
             }
 
             return false;
         }
-
     }
 }

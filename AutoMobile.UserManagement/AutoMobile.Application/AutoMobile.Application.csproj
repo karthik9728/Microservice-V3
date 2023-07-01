@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AutoMobile.Domain\AutoMobile.Domain.csproj" />
+    <ProjectReference Include="..\AutoMobile.Infrastructure\AutoMobile.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

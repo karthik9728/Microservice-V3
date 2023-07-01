@@ -10,6 +10,7 @@ using System.Net;
 using AutoMobile.Domain.ViewModel;
 using System.ComponentModel.DataAnnotations;
 using static AutoMobile.Application.ApplicationConstants.ApplicationConstant;
+using AutoMobile.Domain.Models;
 
 namespace AutoMobile.Web.Controllers
 {
@@ -370,6 +371,65 @@ namespace AutoMobile.Web.Controllers
                 else
                 {
                     _response.AddError("Somthing went worng role not updated");
+                }
+            }
+            catch (Exception ex)
+            {
+                //_response.AddError(ex.ToString());
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return _response;
+        }
+
+        [HttpGet]
+        [Route("GetClaims")]
+        public async Task<ActionResult<ApiResponse>> GetClaims()
+        {
+            try
+            {
+                CustomClaimList claims = new CustomClaimList(); 
+
+                var result = claims.GetClaimList();
+
+                if (result != null)
+                {
+                    _response.IsSuccess = true;
+                    _response.StatusCode = HttpStatusCode.OK;
+                    _response.Result = result;
+                }
+                else
+                {
+                    _response.AddError("No Claims Found");
+                }
+            }
+            catch (Exception ex)
+            {
+                //_response.AddError(ex.ToString());
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return _response;
+        }
+
+        [HttpGet]
+        [Route("GetUserClaims")]
+        public async Task<ActionResult<ApiResponse>> GetUserClaims(string id)
+        {
+            try
+            {
+
+                var result = await _authManager.GetUserClaim(id);
+
+                if (result != null)
+                {
+                    _response.IsSuccess = true;
+                    _response.StatusCode = HttpStatusCode.OK;
+                    _response.Result = result;
+                }
+                else
+                {
+                    _response.AddError("No Claims Found");
                 }
             }
             catch (Exception ex)
