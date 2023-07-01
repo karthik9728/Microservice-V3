@@ -13,6 +13,9 @@ using AutoMobile.Application.Services;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Specialized;
 using System.Web;
+using AutoMobile.Domain.DTO.UserManager;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace AutoMobile.Web.Controllers
 {
@@ -327,6 +330,75 @@ namespace AutoMobile.Web.Controllers
             }
 
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangeUserClaim(string id)
+        {
+            ApplicationUserDto userDto = new ApplicationUserDto();
+
+            List<CustomClaimListDto> systemClaims = new List<CustomClaimListDto>();
+
+            List<ClaimInputModelDto> userClaims = new List<ClaimInputModelDto>();
+
+            var response = await _authService.GetUserByIdAsync<ApiResponse>(id);
+
+            var claimResponse = await _authService.GetClaimsAsync<ApiResponse>();
+
+            var userClaimResponse = await _authService.GetUserClaimsAsync<ApiResponse>(id);
+
+            if (response != null && response.IsSuccess && claimResponse != null && claimResponse.IsSuccess && userClaimResponse != null && userClaimResponse.IsSuccess)
+            {
+                userDto = JsonConvert.DeserializeObject<ApplicationUserDto>(Convert.ToString(response.Result));
+
+                systemClaims = JsonConvert.DeserializeObject<List<CustomClaimListDto>>(Convert.ToString(claimResponse.Result));
+
+                userClaims = JsonConvert.DeserializeObject<List<ClaimInputModelDto>>(Convert.ToString(userClaimResponse.Result));
+
+                ApplicationUserClaimsDto userClaim = new ApplicationUserClaimsDto
+                {
+                    UserDto = userDto,
+                    SystemClaims = systemClaims,
+                    UserClaims = userClaims
+                };
+
+                return View(userClaim);
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeUserClaim(ApplicationUserClaimsDto model, [FromForm] List<string> selectedClaims)
+        {
+            List<ClaimInputModelDto> claims = selectedClaims
+               .Select(c =>
+               {
+                   string[] parts = c.Split(':');
+                   return new ClaimInputModelDto
+                   {
+                       ClaimType = parts[0],
+                       ClaimValue = parts[1]
+                   };
+               })
+               .ToList();
+
+            AddOrRemoveClaimDto dto = new AddOrRemoveClaimDto
+            {
+                UserId = model.UserDto.Id,
+                Claims = claims
+            };
+
+             var  response =  await _authService.AddOrRemoveUserClaimAsync<ApiResponse>(dto);
+
+            if(response != null && response.IsSuccess)
+            {
+                return RedirectToAction(nameof(GetUsers));
+            }
+
+
+           return  View();
+
         }
     }
 }

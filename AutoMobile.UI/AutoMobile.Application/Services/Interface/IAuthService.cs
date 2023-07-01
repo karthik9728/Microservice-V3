@@ -1,4 +1,5 @@
 ﻿using AutoMobile.Domain.DTO.User;
+using AutoMobile.Domain.DTO.UserManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,5 +29,11 @@ namespace AutoMobile.Application.Services.Interface
         Task<T> GetUserByIdAsync<T>(string id);
 
         Task<T> ChangeUserRoleAsync<T>(string id,string role);
+
+        Task<T> GetClaimsAsync<T>();
+
+        Task<T> GetUserClaimsAsync<T>(string id);
+
+        Task<T> AddOrRemoveUserClaimAsync<T>(AddOrRemoveClaimDto dto);
     }
 }

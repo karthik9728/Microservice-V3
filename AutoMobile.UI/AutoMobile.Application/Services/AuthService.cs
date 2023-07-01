@@ -3,6 +3,7 @@ using AutoMobile.Application.Services.Interface;
 using AutoMobile.Domain.ApplicationEnums;
 using AutoMobile.Domain.Common;
 using AutoMobile.Domain.DTO.User;
+using AutoMobile.Domain.DTO.UserManager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -120,6 +121,32 @@ namespace AutoMobile.Application.Services
             });
         }
 
+        public Task<T> GetClaimsAsync<T>()
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = ApplicationEnum.ApiType.GET,
+                Url = APIGatewayUrl + "/api/usermanagement/User/GetClaims",
+            });
+        }
 
+        public Task<T> GetUserClaimsAsync<T>(string id)
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = ApplicationEnum.ApiType.GET,
+                Url = APIGatewayUrl + $"/api/usermanagement/User/GetUserClaims?id={id}",
+            });
+        }
+
+        public Task<T> AddOrRemoveUserClaimAsync<T>(AddOrRemoveClaimDto dto)
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = ApplicationEnum.ApiType.POST,
+                Url = APIGatewayUrl + "/api/usermanagement/User/AddOrRemoveClaim",
+                Data = dto
+            });
+        }
     }
 }
