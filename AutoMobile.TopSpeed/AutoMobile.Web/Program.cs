@@ -1,14 +1,21 @@
 using AutoMobile.Application.Contracts.Persistence;
+using AutoMobile.Application.Services;
+using AutoMobile.Domain.CommandHandlers;
+using AutoMobile.Domain.Commands;
 using AutoMobile.Domain.Common;
 using AutoMobile.Infrastructure.Common;
 using AutoMobile.Infrastructure.Repository;
 using AutoMobile.Infrastructure.UnitOfWork;
+using MediatR;
+using MicroRabbit.Bus;
+using MicroRabbit.Domain.Core.Bus;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 
@@ -37,8 +44,27 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
+builder.Services.AddSingleton<IEventBus, RabbitMQBus>(x =>
+{
+    var scopeFactory = x.GetRequiredService<IServiceScopeFactory>();
+    return new RabbitMQBus(x.GetService<IMediator>(), scopeFactory);
+});
+
+
+
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ITopSpeedService, TopSpeedService>();
+
+
+#region
+
+builder.Services.AddTransient<IRequestHandler<CreateOrderCommand, bool>, CreateOrderCommandHandler>();
+
+//MediatR 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+#endregion
 
 
 builder.Services.AddHttpContextAccessor();

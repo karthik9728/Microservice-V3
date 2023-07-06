@@ -22,6 +22,8 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\AutoMobile.Infrastructure\AutoMobile.Infrastructure.csproj" />
+	  <ProjectReference Include="..\MicroRabbit.Bus\MicroRabbit.Bus.csproj" />
+	  <ProjectReference Include="..\MicroRabbit.Domain.Core\MicroRabbit.Domain.Core.csproj" />
 	</ItemGroup>
 
 </Project>
