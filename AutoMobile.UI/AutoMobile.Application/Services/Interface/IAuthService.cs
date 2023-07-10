@@ -35,5 +35,7 @@ namespace AutoMobile.Application.Services.Interface
         Task<T> GetUserClaimsAsync<T>(string id);
 
         Task<T> AddOrRemoveUserClaimAsync<T>(AddOrRemoveClaimDto dto);
+
+        Task<T> ValidateUserAsync<T>(string userId);
     }
 }

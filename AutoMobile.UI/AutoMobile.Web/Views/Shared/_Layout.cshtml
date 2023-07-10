@@ -36,6 +36,9 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Manager" asp-action="Index">Manager</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="EmployeeBenefits">Employee Benefits</a>
+                        </li>
                         @if (User.IsInRole(CustomRole.SuperAdmin))
                         {
                             <li class="nav-item dropdown">

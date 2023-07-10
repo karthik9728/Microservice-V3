@@ -467,5 +467,10 @@ namespace AutoMobile.Web.Controllers
                 return RedirectToAction(nameof(GetUsers));
             }          
         }
+
+        public IActionResult ProbationPeriod()
+        {
+            return View();
+        }
     }
 }

@@ -148,5 +148,14 @@ namespace AutoMobile.Application.Services
                 Data = dto
             });
         }
+
+        public Task<T> ValidateUserAsync<T>(string userId)
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = ApplicationEnum.ApiType.POST,
+                Url = APIGatewayUrl + $"/api/usermanagement/User/ValidateUser?userId={userId}",
+            });
+        }
     }
 }
