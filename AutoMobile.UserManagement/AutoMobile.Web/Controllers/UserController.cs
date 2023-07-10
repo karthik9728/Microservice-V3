@@ -11,6 +11,7 @@ using AutoMobile.Domain.ViewModel;
 using System.ComponentModel.DataAnnotations;
 using static AutoMobile.Application.ApplicationConstants.ApplicationConstant;
 using AutoMobile.Domain.Models;
+using AutoMobile.Application.Services;
 
 namespace AutoMobile.Web.Controllers
 {
@@ -19,12 +20,14 @@ namespace AutoMobile.Web.Controllers
     public class UserController : ControllerBase
     {
         public readonly IAuthManager _authManager;
+        private readonly IProbationValidator _probationValidator;
         private readonly ILogger<UserController> _logger;
         protected ApiResponse _response;
 
-        public UserController(IAuthManager authManager, ILogger<UserController> logger)
+        public UserController(IAuthManager authManager, IProbationValidator probationValidator, ILogger<UserController> logger)
         {
             _authManager = authManager;
+            _probationValidator = probationValidator;
             _logger = logger;
             _response = new ApiResponse();
         }
@@ -459,6 +462,37 @@ namespace AutoMobile.Web.Controllers
                 else
                 {
                     _response.AddError("Somthing went worng calims not updated");
+                }
+            }
+            catch (Exception ex)
+            {
+                //_response.AddError(ex.ToString());
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return _response;
+        }
+
+
+        [HttpPost]
+        [Route("ValidateUser")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse>> ValidateUser(string userId)
+        {
+            try
+            {
+                var result = await _probationValidator.ValidateUserProbationAsync(userId);
+
+                if (result)
+                {
+                    _response.IsSuccess = true;
+                    _response.StatusCode = HttpStatusCode.OK;
+                    _response.DisplayMessage = "User is Valid";
+                }
+                else
+                {
+                    _response.StatusCode = HttpStatusCode.OK;
+                    _response.AddError("Still In Probation Period");
                 }
             }
             catch (Exception ex)

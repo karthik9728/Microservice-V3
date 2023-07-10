@@ -5,6 +5,7 @@ using AutoMobile.Domain.Common;
 using AutoMobile.Domain.Models;
 using AutoMobile.Infrastructure.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -121,6 +122,8 @@ builder.Services.AddAuthorization(options =>
 });
 
 #endregion
+
+builder.Services.AddScoped<IProbationValidator,ProbationValidator>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

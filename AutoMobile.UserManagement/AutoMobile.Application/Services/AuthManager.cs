@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Web;
 using static AutoMobile.Application.ApplicationConstants.ApplicationConstant;
 using AutoMobile.Infrastructure.Common;
+using AutoMobile.Application.ApplicationConstants;
 
 namespace AutoMobile.Application.Services
 {
@@ -63,7 +64,21 @@ namespace AutoMobile.Application.Services
 
                 if (isRoleExists)
                 {
+
                     await _userManager.AddToRoleAsync(user, registerInputModel.Role);
+
+                    // Calculate and set the probation end date claim
+                    var probationEndDate = DateTime.UtcNow.AddMonths(1);
+                    var claims = new List<Claim>()
+                    {
+                         new Claim(CustomClaimType.JoiningDate, DateTime.UtcNow.ToString("yyyy-MM-dd")),
+                         new Claim(CustomClaimType.ProbationEndDate, probationEndDate.ToString("yyyy-MM-dd")),
+                    };
+                  
+
+                    await _userManager.AddClaimsAsync(user, claims);
+
+                    await _dbContext.SaveChangesAsync();
                 }
                 else
                 {

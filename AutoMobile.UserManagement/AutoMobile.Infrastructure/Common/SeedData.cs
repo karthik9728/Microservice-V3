@@ -111,9 +111,18 @@ namespace AutoMobile.Infrastructure.Common
                 {
                     await userManager.AddToRoleAsync(userOne, CustomRole.User);
 
-                    var claim = new Claim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager);
+                    var JoiningDate = "2023-05-01";
 
-                    await userManager.AddClaimAsync(userOne,claim);
+                    var probationEndDate = DateTime.Parse(JoiningDate).AddMonths(1);
+
+                    var claims = new List<Claim>()
+                    {
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager),
+                         new Claim(CustomClaimType.JoiningDate, DateTime.Parse(JoiningDate).ToString("yyyy-MM-dd")),
+                         new Claim(CustomClaimType.ProbationEndDate, probationEndDate.ToString("yyyy-MM-dd")),
+                    };
+
+                    await userManager.AddClaimsAsync(userOne, claims);
                 }
 
                 ApplicationUser userTwo = new ApplicationUser
@@ -131,10 +140,16 @@ namespace AutoMobile.Infrastructure.Common
                 {
                     await userManager.AddToRoleAsync(userTwo, CustomRole.User);
 
+                    var JoiningDate = "2023-05-01";
+
+                    var probationEndDate = DateTime.Parse(JoiningDate).AddMonths(1);
+
                     var claims = new List<Claim>()
                     {
                          new Claim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager),
-                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.SeniorManager)
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.SeniorManager),
+                         new Claim(CustomClaimType.JoiningDate, DateTime.Parse(JoiningDate).ToString("yyyy-MM-dd")),
+                         new Claim(CustomClaimType.ProbationEndDate, probationEndDate.ToString("yyyy-MM-dd")),
                     };
 
                     await userManager.AddClaimsAsync(userTwo, claims);
@@ -157,11 +172,17 @@ namespace AutoMobile.Infrastructure.Common
                 {
                     await userManager.AddToRoleAsync(userThree, CustomRole.User);
 
+                    var JoiningDate = "2023-05-01";
+
+                    var probationEndDate = DateTime.Parse(JoiningDate).AddMonths(1);
+
                     var claims = new List<Claim>()
                     {
                          new Claim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager),
                          new Claim(CustomClaimType.ManagerType, CustomClaimValue.SeniorManager),
-                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.AssistantManager)
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.AssistantManager),
+                         new Claim(CustomClaimType.JoiningDate, DateTime.Parse(JoiningDate).ToString("yyyy-MM-dd")),
+                         new Claim(CustomClaimType.ProbationEndDate, probationEndDate.ToString("yyyy-MM-dd")),
                     };
 
                     await userManager.AddClaimsAsync(userThree, claims);
@@ -184,15 +205,50 @@ namespace AutoMobile.Infrastructure.Common
                 {
                     await userManager.AddToRoleAsync(userFour, CustomRole.User);
 
+                    var JoiningDate = "2023-05-01";
+
+                    var probationEndDate = DateTime.Parse(JoiningDate).AddMonths(1);
+
                     var claims = new List<Claim>()
                     {
                          new Claim(CustomClaimType.ManagerType, CustomClaimValue.JuniorManager),
                          new Claim(CustomClaimType.ManagerType, CustomClaimValue.SeniorManager),
                          new Claim(CustomClaimType.ManagerType, CustomClaimValue.AssistantManager),
-                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.AssociateProductManager)
+                         new Claim(CustomClaimType.ManagerType, CustomClaimValue.AssociateProductManager),
+                         new Claim(CustomClaimType.JoiningDate, DateTime.Parse(JoiningDate).ToString("yyyy-MM-dd")),
+                         new Claim(CustomClaimType.ProbationEndDate, probationEndDate.ToString("yyyy-MM-dd")),
                     };
 
                     await userManager.AddClaimsAsync(userFour, claims);
+
+                    await applicationDbContext.SaveChangesAsync();
+                }
+
+                ApplicationUser userFive = new ApplicationUser
+                {
+                    Email = "userFive@gmail.com",
+                    UserName = "userFive@gmail.com",
+                    FirstName = "Jhon",
+                    LastName = "Doe 5",
+                    EmailConfirmed = true
+                };
+
+                var userFiveResult = await userManager.CreateAsync(userFive, "User@123");
+
+                if (userFiveResult.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(userFive, CustomRole.User);
+
+                    // Calculate and set the probation end date claim
+                    var probationEndDate = DateTime.UtcNow.AddMonths(1);
+
+                    var claims = new List<Claim>()
+                    {
+                         new Claim(CustomClaimType.JoiningDate, DateTime.UtcNow.ToString("yyyy-MM-dd")),
+                         new Claim(CustomClaimType.ProbationEndDate, probationEndDate.ToString("yyyy-MM-dd")),
+                    };
+
+                    await userManager.AddClaimsAsync(userFive, claims);
 
                     await applicationDbContext.SaveChangesAsync();
                 }

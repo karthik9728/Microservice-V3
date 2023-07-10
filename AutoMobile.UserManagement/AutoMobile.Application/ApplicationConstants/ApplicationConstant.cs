@@ -27,6 +27,9 @@ namespace AutoMobile.Application.ApplicationConstants
     public static class CustomClaimType
     {
         public static string ManagerType = "MANAGERTYPE";
+        public static string EmploymentDate = "EMPLOYMENTDATE";
+        public static string JoiningDate = "JOININGDATE";
+        public static string ProbationEndDate = "PROBATIONENDDATE";
     }
 
     public static class CustomClaimValue
@@ -35,6 +38,7 @@ namespace AutoMobile.Application.ApplicationConstants
         public static string SeniorManager = "SENIORMANAGER";
         public static string AssistantManager = "ASSISTANTMANAGER";
         public static string AssociateProductManager = "ASSOCIATEPRODUCTMANAGER";
+
     }
 
     public static class CustomClaimPolicy
@@ -43,5 +47,6 @@ namespace AutoMobile.Application.ApplicationConstants
         public static string SeniorManagerPolicy = "SeniorManagerPolicy";
         public static string AssistantManagerPolicy = "AssistantManagerPolicy";
         public static string AssociateProductManagerPolicy = "AssociateProductManagerPolicy";
+        public static string ProbationPolicy = "ProbationPolicy";
     }
 }

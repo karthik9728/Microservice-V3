@@ -26,6 +26,9 @@ namespace AutoMobile.Domain.ApplicationConstants
     public static class CustomClaimType
     {
         public static string ManagerType = "MANAGERTYPE";
+        public static string EmploymentDate = "EMPLOYMENTDATE";
+        public static string JoiningDate = "JOININGDATE";
+        public static string ProbationEndDate = "PROBATIONENDDATE";
     }
 
     public static class CustomClaimValue
@@ -34,6 +37,7 @@ namespace AutoMobile.Domain.ApplicationConstants
         public static string SeniorManager = "SENIORMANAGER";
         public static string AssistantManager = "ASSISTANTMANAGER";
         public static string AssociateProductManager = "ASSOCIATEPRODUCTMANAGER";
+        public static string JoiningDate = DateTime.Now.ToString("yyyy-MM-dd");
     }
 
     public static class CustomClaimPolicy
