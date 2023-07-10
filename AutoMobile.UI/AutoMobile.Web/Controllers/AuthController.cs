@@ -355,7 +355,7 @@ namespace AutoMobile.Web.Controllers
 
                 userClaims = JsonConvert.DeserializeObject<List<ClaimInputModelDto>>(Convert.ToString(userClaimResponse.Result));
 
-                ApplicationUserClaimsDto userClaim = new ApplicationUserClaimsDto
+                ApplicationUserUpdateDto userClaim = new ApplicationUserUpdateDto
                 {
                     UserDto = userDto,
                     SystemClaims = systemClaims,
@@ -369,7 +369,7 @@ namespace AutoMobile.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeUserClaim(ApplicationUserClaimsDto model, [FromForm] List<string> selectedClaims)
+        public async Task<IActionResult> ChangeUserClaim(ApplicationUserUpdateDto model, [FromForm] List<string> selectedClaims)
         {
             List<ClaimInputModelDto> claims = selectedClaims
                .Select(c =>
@@ -399,6 +399,73 @@ namespace AutoMobile.Web.Controllers
 
            return  View();
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string id)
+        {
+            ApplicationUserDto userDto = new ApplicationUserDto();
+
+            List<CustomClaimListDto> systemClaims = new List<CustomClaimListDto>();
+
+            List<ClaimInputModelDto> userClaims = new List<ClaimInputModelDto>();
+
+            var response = await _authService.GetUserByIdAsync<ApiResponse>(id);
+
+            var claimResponse = await _authService.GetClaimsAsync<ApiResponse>();
+
+            var userClaimResponse = await _authService.GetUserClaimsAsync<ApiResponse>(id);
+
+            if (response != null && response.IsSuccess && claimResponse != null && claimResponse.IsSuccess && userClaimResponse != null && userClaimResponse.IsSuccess)
+            {
+                userDto = JsonConvert.DeserializeObject<ApplicationUserDto>(Convert.ToString(response.Result));
+
+                systemClaims = JsonConvert.DeserializeObject<List<CustomClaimListDto>>(Convert.ToString(claimResponse.Result));
+
+                userClaims = JsonConvert.DeserializeObject<List<ClaimInputModelDto>>(Convert.ToString(userClaimResponse.Result));
+
+                ApplicationUserUpdateDto userClaim = new ApplicationUserUpdateDto
+                {
+                    UserDto = userDto,
+                    SystemClaims = systemClaims,
+                    UserClaims = userClaims
+                };
+
+                return View(userClaim);
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(ApplicationUserUpdateDto model, [FromForm] List<string> selectedClaims)
+        {
+            List<ClaimInputModelDto> claims = selectedClaims
+               .Select(c =>
+               {
+                   string[] parts = c.Split(':');
+                   return new ClaimInputModelDto
+                   {
+                       ClaimType = parts[0],
+                       ClaimValue = parts[1]
+                   };
+               })
+               .ToList();
+
+            AddOrRemoveClaimDto dto = new AddOrRemoveClaimDto
+            {
+                UserId = model.UserDto.Id,
+                Claims = claims
+            };
+
+            var response = await _authService.AddOrRemoveUserClaimAsync<ApiResponse>(dto);
+
+            var roleResponse = await _authService.ChangeUserRoleAsync<ApiResponse>(model.UserDto.Id, model.UserDto.Role);
+
+            if (response != null && response.IsSuccess && roleResponse != null && roleResponse.IsSuccess) ;
+            {
+                return RedirectToAction(nameof(GetUsers));
+            }          
         }
     }
 }

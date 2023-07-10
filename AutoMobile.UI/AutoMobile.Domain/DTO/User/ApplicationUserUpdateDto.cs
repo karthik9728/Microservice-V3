@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AutoMobile.Domain.DTO.User
 {
-    public class ApplicationUserClaimsDto
+    public class ApplicationUserUpdateDto
     {
         public ApplicationUserDto UserDto { get; set; }
 

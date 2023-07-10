@@ -1,8 +1,7 @@
-﻿@using static AutoMobile.Application.ApplicationContants.ApplicationConstant;
-@model ApplicationUserUpdateDto
+﻿@model ApplicationUserUpdateDto
 
 <div class="container mt-3">
-    <h1>Change User Claim</h1>
+    <h1>Change User Role and Claim</h1>
     <br />
     <form method="post">
         <input asp-for="@Model.UserDto.Id" hidden />
@@ -20,7 +19,10 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Role</label>
-            <input class="form-control" asp-for="@Model.UserDto.Role" disabled>
+            <select class="form-select" asp-for="@Model.UserDto.Role">
+                <option value="@CustomRole.User">USER</option>
+                <option value="@CustomRole.PremiumUser">PREMIUM USER</option>
+            </select>
         </div>
         <label class="form-label"><strong>Claims</strong></label>
         @foreach (var group in Model.SystemClaims.GroupBy(c => c.ClaimType))
@@ -43,4 +45,4 @@
             <button type="submit" class="btn btn-warning">Update</button>
         </div>
     </form>
-</div>
+</div
