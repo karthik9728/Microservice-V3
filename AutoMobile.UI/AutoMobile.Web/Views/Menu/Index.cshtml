@@ -18,7 +18,6 @@
                         <li class="mb-1">
                             <a href="#" class="link-dark rounded" onclick="loadPage('Updates')">Updates</a>
                         </li>
-                        <li><a href="#" class="link-dark rounded">Reports</a></li>
                     </ul>
                 </div>
             </li>
@@ -28,14 +27,46 @@
                 </button>
                 <div class="collapse" id="dashboard-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-dark rounded">Overview</a></li>
-                        <li><a href="#" class="link-dark rounded">Weekly</a></li>
-                        <li><a href="#" class="link-dark rounded">Monthly</a></li>
-                        <li><a href="#" class="link-dark rounded">Annually</a></li>
+                        <li class="mb-1">
+                            <a href="#" class="link-dark rounded" onclick="loadPage('Weekly')">Weekly</a>
+                        </li>
+                        <li class="mb-1">
+                            <a href="#" class="link-dark rounded" onclick="loadPage('Monthly')">Monthly</a>
+                        </li>
+                        <li class="mb-1">
+                            <a href="#" class="link-dark rounded" onclick="loadPage('Annually')">Annually</a>
+                        </li>
                     </ul>
                 </div>
             </li>
-            <li class="mb-1">
+        </ul>
+    </div>
+    <div class="col-md-6" id="content-container">
+        @*        <partial name="_Home" />*@ <!-- Render the initial content (e.g., Home page) -->
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        function loadPage(pageName) {
+            $.ajax({
+                url: '/Menu/LoadPage',
+                method: 'GET',
+                data: { pageName: pageName },
+                success: function (response) {
+                    $('#content-container').html(response); // Update the content of the second column with the fetched HTML
+                },
+                error: function () {
+                    $('#content-container').html('<p>Error loading page.</p>'); // Display an error message if the AJAX request fails
+                }
+            });
+        }
+    </script>
+}
+
+
+
+@*<li class="mb-1">
                 <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
                     Orders
                 </button>
@@ -60,29 +91,4 @@
                         <li><a href="#" class="link-dark rounded">Sign out</a></li>
                     </ul>
                 </div>
-            </li>
-        </ul>
-
-    </div>
-    <div class="col-md-6" id="content-container">
-@*        <partial name="_Home" />*@ <!-- Render the initial content (e.g., Home page) -->
-    </div>
-</div>
-
-@section Scripts{
-    <script>
-        function loadPage(pageName) {
-            $.ajax({
-                url: '/Menu/LoadPage',
-                method: 'GET',
-                data: { pageName: pageName },
-                success: function (response) {
-                    $('#content-container').html(response); // Update the content of the second column with the fetched HTML
-                },
-                error: function () {
-                    $('#content-container').html('<p>Error loading page.</p>'); // Display an error message if the AJAX request fails
-                }
-            });
-        }
-    </script>
-}
+            </li>*@
