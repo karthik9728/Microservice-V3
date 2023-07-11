@@ -252,7 +252,29 @@ namespace AutoMobile.Infrastructure.Common
 
                     await applicationDbContext.SaveChangesAsync();
                 }
+            }
 
+            if (!applicationDbContext.Menu.Any())
+            {
+                applicationDbContext.Menu.AddRange(
+                    new Menu { Name = "Home", IsActive = true },
+                    new Menu { Name = "Dashboard", IsActive = true }
+                );
+
+                await applicationDbContext.SaveChangesAsync();
+            }
+
+            if (!applicationDbContext.SubMenu.Any())
+            {
+                applicationDbContext.SubMenu.AddRange(
+                    new SubMenu { Name = "Overview", MenuId = 1, IsActive = true },
+                    new SubMenu { Name = "Updates", MenuId = 1, IsActive = true },
+                    new SubMenu { Name = "Monthly", MenuId = 2, IsActive = true },
+                    new SubMenu { Name = "Weekly", MenuId = 2, IsActive = true },
+                    new SubMenu { Name = "Annually", MenuId = 2, IsActive = true }
+                );
+
+                await applicationDbContext.SaveChangesAsync();
             }
         }
     }

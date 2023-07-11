@@ -4,6 +4,8 @@ using AutoMobile.Application.Services.Interface;
 using AutoMobile.Domain.Common;
 using AutoMobile.Domain.Models;
 using AutoMobile.Infrastructure.Common;
+using AutoMobile.Infrastructure.Interface;
+using AutoMobile.Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +66,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 
 builder.Services.AddScoped<IAuthManager, AuthManager>();
 builder.Services.AddScoped<IEmailService,EmailService>();
+builder.Services.AddScoped<IMenuReposiotry, MenuReposiotry>();
 
 #endregion
 
@@ -129,7 +133,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -174,7 +177,7 @@ builder.Services.AddSwaggerGen(options =>
             },
             new List<string>()
         }
-    }); ;
+    });
 });
 
 

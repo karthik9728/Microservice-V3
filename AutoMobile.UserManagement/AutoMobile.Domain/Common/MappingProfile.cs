@@ -19,6 +19,10 @@ namespace AutoMobile.Domain.Common
             CreateMap<ApplicationUser, RegisterInputModel>().ReverseMap();
 
             CreateMap<ApplicationUser, ApplicationUserVM>().ReverseMap();
+
+            CreateMap<Menu, MenuVM>().ReverseMap();
+
+            CreateMap<SubMenu, SubMenuVM>().ReverseMap();
         }
     }
 }
